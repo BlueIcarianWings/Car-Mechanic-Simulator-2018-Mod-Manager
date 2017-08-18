@@ -1,0 +1,17 @@
+Car Mechanic simulator 2018 Mod Manager
+
+A modding and save file tool for editing and handling mods for Car Mechanic simulator 2018
+
+Discussion and release thread
+http://steamcommunity.com/app/645630/discussions/1/1470841715977918480/
+//-------------------
+
+Release notes
+
+0.1
+14/Aug/2017
+Initial Release for CMS18 1.2.0
+Basic save game editor, with back ups.
+Allows for addition of car configs from txt files or copied in text
+Allows for removal of unwanted car configs and car body configs
+Allows filling in of missing car body config files
