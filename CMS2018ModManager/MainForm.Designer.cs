@@ -66,9 +66,16 @@
             this.SGETProfilelabel = new System.Windows.Forms.Label();
             this.CarConfigtabPage = new System.Windows.Forms.TabPage();
             this.CCMTpanel = new System.Windows.Forms.Panel();
-            this.CCMTAddMissingBodyConfigbutton = new System.Windows.Forms.Button();
-            this.CCMTAddCarConfigfromtextbutton = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.CCMTAddBodyConfigFromTextbutton = new System.Windows.Forms.Button();
+            this.CCMTAddBodyConfigFromFilebutton = new System.Windows.Forms.Button();
+            this.CCMTDeleteBodyConfigbutton = new System.Windows.Forms.Button();
+            this.CCMTCreateNewBodyConfigbutton = new System.Windows.Forms.Button();
+            this.CCMTCCCgroupBox = new System.Windows.Forms.GroupBox();
+            this.CCMTDeleteCarConfigbutton = new System.Windows.Forms.Button();
+            this.CCMTCreateNewCarConfigbutton = new System.Windows.Forms.Button();
             this.CCMTAddCarConfigfromfilebutton = new System.Windows.Forms.Button();
+            this.CCMTAddCarConfigfromtextbutton = new System.Windows.Forms.Button();
             this.CCMTBodyConfigPresenttextBox = new System.Windows.Forms.TextBox();
             this.CCMTBodyConfigPresentlabel = new System.Windows.Forms.Label();
             this.CCMTCarVersionNametextBox = new System.Windows.Forms.TextBox();
@@ -90,11 +97,8 @@
             this.setCarConfigDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.CCMTCCCgroupBox = new System.Windows.Forms.GroupBox();
-            this.CCMTCreateNewCarConfigbutton = new System.Windows.Forms.Button();
-            this.CCMTDeleteCarConfigbutton = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.CCMTDeleteBodyConfigbutton = new System.Windows.Forms.Button();
+            this.CCMTAddMissingBodyConfigbutton = new System.Windows.Forms.Button();
+            this.CCMTCarPicturepictureBox = new System.Windows.Forms.PictureBox();
             this.MaintabControl.SuspendLayout();
             this.SaveEditortabPage.SuspendLayout();
             this.SaveGameEditorTabtabControl.SuspendLayout();
@@ -114,9 +118,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.SGETGPartsRepairednumericUpDown)).BeginInit();
             this.CarConfigtabPage.SuspendLayout();
             this.CCMTpanel.SuspendLayout();
-            this.menuStrip1.SuspendLayout();
-            this.CCMTCCCgroupBox.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.CCMTCCCgroupBox.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.CCMTCarPicturepictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // MaintabControl
@@ -126,7 +131,7 @@
             this.MaintabControl.Location = new System.Drawing.Point(13, 27);
             this.MaintabControl.Name = "MaintabControl";
             this.MaintabControl.SelectedIndex = 0;
-            this.MaintabControl.Size = new System.Drawing.Size(799, 623);
+            this.MaintabControl.Size = new System.Drawing.Size(885, 623);
             this.MaintabControl.TabIndex = 0;
             // 
             // SaveEditortabPage
@@ -138,7 +143,7 @@
             this.SaveEditortabPage.Location = new System.Drawing.Point(4, 22);
             this.SaveEditortabPage.Name = "SaveEditortabPage";
             this.SaveEditortabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.SaveEditortabPage.Size = new System.Drawing.Size(791, 597);
+            this.SaveEditortabPage.Size = new System.Drawing.Size(877, 597);
             this.SaveEditortabPage.TabIndex = 0;
             this.SaveEditortabPage.Text = "Save Game Editor";
             this.SaveEditortabPage.UseVisualStyleBackColor = true;
@@ -149,7 +154,7 @@
             this.SaveGameEditorTabtabControl.Location = new System.Drawing.Point(138, 7);
             this.SaveGameEditorTabtabControl.Name = "SaveGameEditorTabtabControl";
             this.SaveGameEditorTabtabControl.SelectedIndex = 0;
-            this.SaveGameEditorTabtabControl.Size = new System.Drawing.Size(647, 574);
+            this.SaveGameEditorTabtabControl.Size = new System.Drawing.Size(733, 574);
             this.SaveGameEditorTabtabControl.TabIndex = 33;
             // 
             // SGETGlobaltabPage
@@ -186,7 +191,7 @@
             this.SGETGlobaltabPage.Location = new System.Drawing.Point(4, 22);
             this.SGETGlobaltabPage.Name = "SGETGlobaltabPage";
             this.SGETGlobaltabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.SGETGlobaltabPage.Size = new System.Drawing.Size(639, 548);
+            this.SGETGlobaltabPage.Size = new System.Drawing.Size(725, 548);
             this.SGETGlobaltabPage.TabIndex = 0;
             this.SGETGlobaltabPage.Text = "Global";
             this.SGETGlobaltabPage.UseVisualStyleBackColor = true;
@@ -548,7 +553,7 @@
             this.CarConfigtabPage.Location = new System.Drawing.Point(4, 22);
             this.CarConfigtabPage.Name = "CarConfigtabPage";
             this.CarConfigtabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.CarConfigtabPage.Size = new System.Drawing.Size(791, 597);
+            this.CarConfigtabPage.Size = new System.Drawing.Size(877, 597);
             this.CarConfigtabPage.TabIndex = 1;
             this.CarConfigtabPage.Text = "Car Config Manager";
             this.CarConfigtabPage.UseVisualStyleBackColor = true;
@@ -556,6 +561,7 @@
             // CCMTpanel
             // 
             this.CCMTpanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.CCMTpanel.Controls.Add(this.CCMTCarPicturepictureBox);
             this.CCMTpanel.Controls.Add(this.groupBox1);
             this.CCMTpanel.Controls.Add(this.CCMTCCCgroupBox);
             this.CCMTpanel.Controls.Add(this.CCMTBodyConfigPresenttextBox);
@@ -567,45 +573,124 @@
             this.CCMTpanel.Controls.Add(this.CCMTNametextBox);
             this.CCMTpanel.Location = new System.Drawing.Point(202, 24);
             this.CCMTpanel.Name = "CCMTpanel";
-            this.CCMTpanel.Size = new System.Drawing.Size(579, 280);
+            this.CCMTpanel.Size = new System.Drawing.Size(666, 478);
             this.CCMTpanel.TabIndex = 2;
             // 
-            // CCMTAddMissingBodyConfigbutton
+            // groupBox1
             // 
-            this.CCMTAddMissingBodyConfigbutton.Location = new System.Drawing.Point(6, 19);
-            this.CCMTAddMissingBodyConfigbutton.Name = "CCMTAddMissingBodyConfigbutton";
-            this.CCMTAddMissingBodyConfigbutton.Size = new System.Drawing.Size(132, 23);
-            this.CCMTAddMissingBodyConfigbutton.TabIndex = 9;
-            this.CCMTAddMissingBodyConfigbutton.Text = "Add Missing Body Config";
-            this.CCMTAddMissingBodyConfigbutton.UseVisualStyleBackColor = true;
-            this.CCMTAddMissingBodyConfigbutton.Click += new System.EventHandler(this.CCMTAddMissingBodyConfigbutton_Click);
+            this.groupBox1.Controls.Add(this.CCMTAddMissingBodyConfigbutton);
+            this.groupBox1.Controls.Add(this.CCMTAddBodyConfigFromTextbutton);
+            this.groupBox1.Controls.Add(this.CCMTAddBodyConfigFromFilebutton);
+            this.groupBox1.Controls.Add(this.CCMTDeleteBodyConfigbutton);
+            this.groupBox1.Controls.Add(this.CCMTCreateNewBodyConfigbutton);
+            this.groupBox1.Location = new System.Drawing.Point(318, 131);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(309, 77);
+            this.groupBox1.TabIndex = 11;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Body Config Commands";
             // 
-            // CCMTAddCarConfigfromtextbutton
+            // CCMTAddBodyConfigFromTextbutton
             // 
-            this.CCMTAddCarConfigfromtextbutton.Location = new System.Drawing.Point(6, 48);
-            this.CCMTAddCarConfigfromtextbutton.Name = "CCMTAddCarConfigfromtextbutton";
-            this.CCMTAddCarConfigfromtextbutton.Size = new System.Drawing.Size(132, 23);
-            this.CCMTAddCarConfigfromtextbutton.TabIndex = 8;
-            this.CCMTAddCarConfigfromtextbutton.Text = "Add Car Config from text";
-            this.CCMTAddCarConfigfromtextbutton.UseVisualStyleBackColor = true;
-            this.CCMTAddCarConfigfromtextbutton.Click += new System.EventHandler(this.CCMTAddCarConfigfromtextbutton_Click);
+            this.CCMTAddBodyConfigFromTextbutton.Location = new System.Drawing.Point(6, 48);
+            this.CCMTAddBodyConfigFromTextbutton.Name = "CCMTAddBodyConfigFromTextbutton";
+            this.CCMTAddBodyConfigFromTextbutton.Size = new System.Drawing.Size(145, 23);
+            this.CCMTAddBodyConfigFromTextbutton.TabIndex = 12;
+            this.CCMTAddBodyConfigFromTextbutton.Text = "Add Body Config from text";
+            this.CCMTAddBodyConfigFromTextbutton.UseVisualStyleBackColor = true;
+            this.CCMTAddBodyConfigFromTextbutton.Click += new System.EventHandler(this.CCMTAddBodyConfigFromTextbutton_Click);
+            // 
+            // CCMTAddBodyConfigFromFilebutton
+            // 
+            this.CCMTAddBodyConfigFromFilebutton.Location = new System.Drawing.Point(6, 19);
+            this.CCMTAddBodyConfigFromFilebutton.Name = "CCMTAddBodyConfigFromFilebutton";
+            this.CCMTAddBodyConfigFromFilebutton.Size = new System.Drawing.Size(145, 23);
+            this.CCMTAddBodyConfigFromFilebutton.TabIndex = 11;
+            this.CCMTAddBodyConfigFromFilebutton.Text = "Add Body Config from file";
+            this.CCMTAddBodyConfigFromFilebutton.UseVisualStyleBackColor = true;
+            this.CCMTAddBodyConfigFromFilebutton.Click += new System.EventHandler(this.CCMTAddBodyConfigFromFilebutton_Click);
+            // 
+            // CCMTDeleteBodyConfigbutton
+            // 
+            this.CCMTDeleteBodyConfigbutton.Location = new System.Drawing.Point(157, 48);
+            this.CCMTDeleteBodyConfigbutton.Name = "CCMTDeleteBodyConfigbutton";
+            this.CCMTDeleteBodyConfigbutton.Size = new System.Drawing.Size(145, 23);
+            this.CCMTDeleteBodyConfigbutton.TabIndex = 10;
+            this.CCMTDeleteBodyConfigbutton.Text = "Delete Body Config";
+            this.CCMTDeleteBodyConfigbutton.UseVisualStyleBackColor = true;
+            this.CCMTDeleteBodyConfigbutton.Click += new System.EventHandler(this.CCMTDeleteBodyConfigbutton_Click);
+            // 
+            // CCMTCreateNewBodyConfigbutton
+            // 
+            this.CCMTCreateNewBodyConfigbutton.Enabled = false;
+            this.CCMTCreateNewBodyConfigbutton.Location = new System.Drawing.Point(157, 0);
+            this.CCMTCreateNewBodyConfigbutton.Name = "CCMTCreateNewBodyConfigbutton";
+            this.CCMTCreateNewBodyConfigbutton.Size = new System.Drawing.Size(145, 23);
+            this.CCMTCreateNewBodyConfigbutton.TabIndex = 9;
+            this.CCMTCreateNewBodyConfigbutton.Text = "Create New Body Config";
+            this.CCMTCreateNewBodyConfigbutton.UseVisualStyleBackColor = true;
+            this.CCMTCreateNewBodyConfigbutton.Visible = false;
+            this.CCMTCreateNewBodyConfigbutton.Click += new System.EventHandler(this.CCMTCreateNewBodyConfigbutton_Click);
+            // 
+            // CCMTCCCgroupBox
+            // 
+            this.CCMTCCCgroupBox.Controls.Add(this.CCMTDeleteCarConfigbutton);
+            this.CCMTCCCgroupBox.Controls.Add(this.CCMTCreateNewCarConfigbutton);
+            this.CCMTCCCgroupBox.Controls.Add(this.CCMTAddCarConfigfromfilebutton);
+            this.CCMTCCCgroupBox.Controls.Add(this.CCMTAddCarConfigfromtextbutton);
+            this.CCMTCCCgroupBox.Location = new System.Drawing.Point(318, 48);
+            this.CCMTCCCgroupBox.Name = "CCMTCCCgroupBox";
+            this.CCMTCCCgroupBox.Size = new System.Drawing.Size(309, 77);
+            this.CCMTCCCgroupBox.TabIndex = 10;
+            this.CCMTCCCgroupBox.TabStop = false;
+            this.CCMTCCCgroupBox.Text = "Car Config Commands";
+            // 
+            // CCMTDeleteCarConfigbutton
+            // 
+            this.CCMTDeleteCarConfigbutton.Location = new System.Drawing.Point(157, 48);
+            this.CCMTDeleteCarConfigbutton.Name = "CCMTDeleteCarConfigbutton";
+            this.CCMTDeleteCarConfigbutton.Size = new System.Drawing.Size(145, 23);
+            this.CCMTDeleteCarConfigbutton.TabIndex = 10;
+            this.CCMTDeleteCarConfigbutton.Text = "Delete Car Config";
+            this.CCMTDeleteCarConfigbutton.UseVisualStyleBackColor = true;
+            this.CCMTDeleteCarConfigbutton.Click += new System.EventHandler(this.CCMTDeleteCarConfigbutton_Click);
+            // 
+            // CCMTCreateNewCarConfigbutton
+            // 
+            this.CCMTCreateNewCarConfigbutton.Location = new System.Drawing.Point(157, 19);
+            this.CCMTCreateNewCarConfigbutton.Name = "CCMTCreateNewCarConfigbutton";
+            this.CCMTCreateNewCarConfigbutton.Size = new System.Drawing.Size(145, 23);
+            this.CCMTCreateNewCarConfigbutton.TabIndex = 9;
+            this.CCMTCreateNewCarConfigbutton.Text = "Create New Car Config";
+            this.CCMTCreateNewCarConfigbutton.UseVisualStyleBackColor = true;
+            this.CCMTCreateNewCarConfigbutton.Click += new System.EventHandler(this.CCMTCreateNewCarConfigbutton_Click);
             // 
             // CCMTAddCarConfigfromfilebutton
             // 
             this.CCMTAddCarConfigfromfilebutton.Location = new System.Drawing.Point(6, 19);
             this.CCMTAddCarConfigfromfilebutton.Name = "CCMTAddCarConfigfromfilebutton";
-            this.CCMTAddCarConfigfromfilebutton.Size = new System.Drawing.Size(132, 23);
+            this.CCMTAddCarConfigfromfilebutton.Size = new System.Drawing.Size(145, 23);
             this.CCMTAddCarConfigfromfilebutton.TabIndex = 7;
             this.CCMTAddCarConfigfromfilebutton.Text = "Add Car Config from file";
             this.CCMTAddCarConfigfromfilebutton.UseVisualStyleBackColor = true;
             this.CCMTAddCarConfigfromfilebutton.Click += new System.EventHandler(this.CCMTAddCarConfigfromfilebutton_Click);
+            // 
+            // CCMTAddCarConfigfromtextbutton
+            // 
+            this.CCMTAddCarConfigfromtextbutton.Location = new System.Drawing.Point(6, 48);
+            this.CCMTAddCarConfigfromtextbutton.Name = "CCMTAddCarConfigfromtextbutton";
+            this.CCMTAddCarConfigfromtextbutton.Size = new System.Drawing.Size(145, 23);
+            this.CCMTAddCarConfigfromtextbutton.TabIndex = 8;
+            this.CCMTAddCarConfigfromtextbutton.Text = "Add Car Config from text";
+            this.CCMTAddCarConfigfromtextbutton.UseVisualStyleBackColor = true;
+            this.CCMTAddCarConfigfromtextbutton.Click += new System.EventHandler(this.CCMTAddCarConfigfromtextbutton_Click);
             // 
             // CCMTBodyConfigPresenttextBox
             // 
             this.CCMTBodyConfigPresenttextBox.BackColor = System.Drawing.SystemColors.Window;
             this.CCMTBodyConfigPresenttextBox.Location = new System.Drawing.Point(146, 92);
             this.CCMTBodyConfigPresenttextBox.Name = "CCMTBodyConfigPresenttextBox";
-            this.CCMTBodyConfigPresenttextBox.Size = new System.Drawing.Size(130, 20);
+            this.CCMTBodyConfigPresenttextBox.Size = new System.Drawing.Size(150, 20);
             this.CCMTBodyConfigPresenttextBox.TabIndex = 6;
             // 
             // CCMTBodyConfigPresentlabel
@@ -621,7 +706,7 @@
             // 
             this.CCMTCarVersionNametextBox.Location = new System.Drawing.Point(146, 48);
             this.CCMTCarVersionNametextBox.Name = "CCMTCarVersionNametextBox";
-            this.CCMTCarVersionNametextBox.Size = new System.Drawing.Size(130, 20);
+            this.CCMTCarVersionNametextBox.Size = new System.Drawing.Size(150, 20);
             this.CCMTCarVersionNametextBox.TabIndex = 4;
             // 
             // CCMTCarVersionNamelabel
@@ -638,7 +723,7 @@
             this.CCMTConfigslistBox.FormattingEnabled = true;
             this.CCMTConfigslistBox.Location = new System.Drawing.Point(7, 48);
             this.CCMTConfigslistBox.Name = "CCMTConfigslistBox";
-            this.CCMTConfigslistBox.Size = new System.Drawing.Size(130, 225);
+            this.CCMTConfigslistBox.Size = new System.Drawing.Size(130, 420);
             this.CCMTConfigslistBox.TabIndex = 2;
             this.CCMTConfigslistBox.SelectedIndexChanged += new System.EventHandler(this.CCMTConfigslistBox_SelectedIndexChanged);
             // 
@@ -685,7 +770,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(820, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(904, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -773,65 +858,30 @@
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
-            // CCMTCCCgroupBox
+            // CCMTAddMissingBodyConfigbutton
             // 
-            this.CCMTCCCgroupBox.Controls.Add(this.CCMTDeleteCarConfigbutton);
-            this.CCMTCCCgroupBox.Controls.Add(this.CCMTCreateNewCarConfigbutton);
-            this.CCMTCCCgroupBox.Controls.Add(this.CCMTAddCarConfigfromfilebutton);
-            this.CCMTCCCgroupBox.Controls.Add(this.CCMTAddCarConfigfromtextbutton);
-            this.CCMTCCCgroupBox.Location = new System.Drawing.Point(283, 48);
-            this.CCMTCCCgroupBox.Name = "CCMTCCCgroupBox";
-            this.CCMTCCCgroupBox.Size = new System.Drawing.Size(285, 77);
-            this.CCMTCCCgroupBox.TabIndex = 10;
-            this.CCMTCCCgroupBox.TabStop = false;
-            this.CCMTCCCgroupBox.Text = "Car Config Commands";
+            this.CCMTAddMissingBodyConfigbutton.Location = new System.Drawing.Point(157, 19);
+            this.CCMTAddMissingBodyConfigbutton.Name = "CCMTAddMissingBodyConfigbutton";
+            this.CCMTAddMissingBodyConfigbutton.Size = new System.Drawing.Size(145, 23);
+            this.CCMTAddMissingBodyConfigbutton.TabIndex = 13;
+            this.CCMTAddMissingBodyConfigbutton.Text = "Add Missing Body Config";
+            this.CCMTAddMissingBodyConfigbutton.UseVisualStyleBackColor = true;
+            this.CCMTAddMissingBodyConfigbutton.Click += new System.EventHandler(this.CCMTAddMissingBodyConfigbutton_Click);
             // 
-            // CCMTCreateNewCarConfigbutton
+            // CCMTCarPicturepictureBox
             // 
-            this.CCMTCreateNewCarConfigbutton.Location = new System.Drawing.Point(145, 19);
-            this.CCMTCreateNewCarConfigbutton.Name = "CCMTCreateNewCarConfigbutton";
-            this.CCMTCreateNewCarConfigbutton.Size = new System.Drawing.Size(132, 23);
-            this.CCMTCreateNewCarConfigbutton.TabIndex = 9;
-            this.CCMTCreateNewCarConfigbutton.Text = "Create New Car Config";
-            this.CCMTCreateNewCarConfigbutton.UseVisualStyleBackColor = true;
-            this.CCMTCreateNewCarConfigbutton.Click += new System.EventHandler(this.CCMTCreateNewCarConfigbutton_Click);
-            // 
-            // CCMTDeleteCarConfigbutton
-            // 
-            this.CCMTDeleteCarConfigbutton.Location = new System.Drawing.Point(145, 48);
-            this.CCMTDeleteCarConfigbutton.Name = "CCMTDeleteCarConfigbutton";
-            this.CCMTDeleteCarConfigbutton.Size = new System.Drawing.Size(132, 23);
-            this.CCMTDeleteCarConfigbutton.TabIndex = 10;
-            this.CCMTDeleteCarConfigbutton.Text = "Delete Car Config";
-            this.CCMTDeleteCarConfigbutton.UseVisualStyleBackColor = true;
-            this.CCMTDeleteCarConfigbutton.Click += new System.EventHandler(this.CCMTDeleteCarConfigbutton_Click);
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.CCMTDeleteBodyConfigbutton);
-            this.groupBox1.Controls.Add(this.CCMTAddMissingBodyConfigbutton);
-            this.groupBox1.Location = new System.Drawing.Point(283, 132);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(285, 49);
-            this.groupBox1.TabIndex = 11;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Body Config Commands";
-            // 
-            // CCMTDeleteBodyConfigbutton
-            // 
-            this.CCMTDeleteBodyConfigbutton.Location = new System.Drawing.Point(145, 19);
-            this.CCMTDeleteBodyConfigbutton.Name = "CCMTDeleteBodyConfigbutton";
-            this.CCMTDeleteBodyConfigbutton.Size = new System.Drawing.Size(132, 23);
-            this.CCMTDeleteBodyConfigbutton.TabIndex = 10;
-            this.CCMTDeleteBodyConfigbutton.Text = "Delete Body Config";
-            this.CCMTDeleteBodyConfigbutton.UseVisualStyleBackColor = true;
-            this.CCMTDeleteBodyConfigbutton.Click += new System.EventHandler(this.CCMTDeleteBodyConfigbutton_Click);
+            this.CCMTCarPicturepictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.CCMTCarPicturepictureBox.Location = new System.Drawing.Point(143, 212);
+            this.CCMTCarPicturepictureBox.Name = "CCMTCarPicturepictureBox";
+            this.CCMTCarPicturepictureBox.Size = new System.Drawing.Size(512, 256);
+            this.CCMTCarPicturepictureBox.TabIndex = 12;
+            this.CCMTCarPicturepictureBox.TabStop = false;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(820, 662);
+            this.ClientSize = new System.Drawing.Size(904, 662);
             this.Controls.Add(this.MaintabControl);
             this.Controls.Add(this.menuStrip1);
             this.Name = "MainForm";
@@ -860,10 +910,11 @@
             this.CarConfigtabPage.PerformLayout();
             this.CCMTpanel.ResumeLayout(false);
             this.CCMTpanel.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.CCMTCCCgroupBox.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.CCMTCCCgroupBox.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.CCMTCarPicturepictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -930,7 +981,7 @@
         private System.Windows.Forms.Label CCMTCarVersionNamelabel;
         private System.Windows.Forms.TextBox CCMTBodyConfigPresenttextBox;
         private System.Windows.Forms.Label CCMTBodyConfigPresentlabel;
-        private System.Windows.Forms.Button CCMTAddMissingBodyConfigbutton;
+        private System.Windows.Forms.Button CCMTCreateNewBodyConfigbutton;
         private System.Windows.Forms.Button CCMTAddCarConfigfromtextbutton;
         private System.Windows.Forms.Button CCMTAddCarConfigfromfilebutton;
         private System.Windows.Forms.GroupBox CCMTCCCgroupBox;
@@ -938,6 +989,10 @@
         private System.Windows.Forms.Button CCMTDeleteCarConfigbutton;
         private System.Windows.Forms.Button CCMTCreateNewCarConfigbutton;
         private System.Windows.Forms.Button CCMTDeleteBodyConfigbutton;
+        private System.Windows.Forms.Button CCMTAddBodyConfigFromTextbutton;
+        private System.Windows.Forms.Button CCMTAddBodyConfigFromFilebutton;
+        private System.Windows.Forms.Button CCMTAddMissingBodyConfigbutton;
+        private System.Windows.Forms.PictureBox CCMTCarPicturepictureBox;
     }
 }
 

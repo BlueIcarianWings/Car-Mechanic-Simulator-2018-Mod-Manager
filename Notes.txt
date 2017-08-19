@@ -8,6 +8,12 @@ http://steamcommunity.com/app/645630/discussions/1/1470841715977918480/
 
 Release notes
 
+0.1.1
+19/Aug/2017
+Added ability to add body config files from text files and pasted in text
+Added the display of the selected cars image
+Refactored code that got the number of a config file into a function
+
 0.1
 14/Aug/2017
 Initial Release for CMS18 1.2.0

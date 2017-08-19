@@ -276,13 +276,6 @@ namespace CMS2018ModManager
                 Count++;
             }
         }
-        
-        //Handles a car being selected
-        private void CCMTAvailableCarslistBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //Call the fuction to fill out the configs listbox
-            SummariseCarConfigFiles(CCMTAvailableCarslistBox.SelectedItem.ToString());
-        }
 
         //Summarise the config text files
         private void SummariseCarConfigFiles(string CarConfigFolder)
@@ -334,6 +327,92 @@ namespace CMS2018ModManager
                     CarConfigFiles.Add(fileName);
                     CCMTConfigslistBox.Items.Add(fileName);
                 }
+            }
+        }
+
+        //Dialog box with a large text input field for pasting in a car data file as text
+        public static DialogResult CarConfigTextInputBox(ref string OutputValue)
+        {
+            //Setup object
+            Form form = new Form();
+            Label label = new Label();
+            TextBox textBox = new TextBox();
+            Button buttonOk = new Button();
+            Button buttonCancel = new Button();
+
+            form.Text = "Car Config File as text";
+            label.Text = "Please copy and paste the Car Config File text into the box below";
+            textBox.Text = OutputValue;
+
+            buttonOk.Text = "OK";
+            buttonCancel.Text = "Cancel";
+            buttonOk.DialogResult = DialogResult.OK;
+            buttonCancel.DialogResult = DialogResult.Cancel;
+
+            label.SetBounds(9, 10, 372, 13);
+            textBox.Multiline = true;
+            textBox.ScrollBars = ScrollBars.Vertical;
+            textBox.SetBounds(12, 36, 672, 820);
+            buttonOk.SetBounds(105, 872, 75, 23);
+            buttonCancel.SetBounds(186, 872, 75, 23);
+
+            label.AutoSize = true;
+            textBox.Anchor = textBox.Anchor | AnchorStyles.Right;
+            buttonOk.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            buttonCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+
+            form.ClientSize = new Size(696, 907);
+            form.Controls.AddRange(new Control[] { label, textBox, buttonOk, buttonCancel });
+            form.ClientSize = new Size(Math.Max(600, label.Right + 10), form.ClientSize.Height);
+            form.FormBorderStyle = FormBorderStyle.FixedDialog;
+            form.StartPosition = FormStartPosition.CenterScreen;
+            form.MinimizeBox = false;
+            form.MaximizeBox = false;
+            form.AcceptButton = buttonOk;
+            form.CancelButton = buttonCancel;
+
+            DialogResult dialogResult = form.ShowDialog();
+
+            //Get text
+            OutputValue = textBox.Text;
+            return dialogResult;
+        }
+
+        //Gets the number from a config filename
+        private int GetNumberFromFilename(string filename)
+        {
+            int n = 0;  //Config file number, default of 1
+            if (filename.Any(char.IsDigit))     //Does it contain a number?
+            {
+                //Contains a number
+                //We need to figure out what that number is
+                int.TryParse(new string(filename.Where(a => Char.IsDigit(a)).ToArray()), out n);    //Get the file number
+                n++;    //Inc it to the next one along
+            }
+            //Else Does not contain a number so default of 0 applies
+
+            return n;
+        }
+
+        //Handles a car being selected
+        private void CCMTAvailableCarslistBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Get the car folder name
+            string CarConfigFolder = CCMTAvailableCarslistBox.SelectedItem.ToString();
+            //Call the fuction to fill out the configs listbox
+            SummariseCarConfigFiles(CarConfigFolder);
+
+            //Empty out the car picture box
+            CCMTCarPicturepictureBox.Image = null;
+            //Set the picture
+            //Assemble the image filepath
+            string ImageFilepath = ModManConfig.GetCarsDataDir() + "\\" + CarConfigFolder + "\\PartThumb\\car_" + CarConfigFolder + "-car_" + CarConfigFolder + ".png";
+            if (File.Exists(ImageFilepath))
+            {
+                //Create the image
+                Image ImageObject = Image.FromFile(ImageFilepath);
+                //Fill out the picture box
+                CCMTCarPicturepictureBox.Image = ImageObject;
             }
         }
 
@@ -400,7 +479,7 @@ namespace CMS2018ModManager
         private void CCMTAddCarConfigfromfilebutton_Click(object sender, EventArgs e)
         {
             //Prompt the user to see if they are sure
-            DialogResult PromptResult = MessageBox.Show("This will load a new config file into the currently selected car directory\n\n" +
+            DialogResult PromptResult = MessageBox.Show("This will load a new car config file into the currently selected car directory\n\n" +
                                                         "The config file will be placed at the end of the list, so do not worry about filename numbers\n" +
                                                         "If a matching body config file is present it will be used\n" +
                                                         /* "Text or zip files can be used\n" + */
@@ -429,26 +508,13 @@ namespace CMS2018ModManager
                         string temp = CCMTConfigslistBox.Items[CCMTConfigslistBox.Items.Count-1].ToString();
                         string Dest = ModManConfig.GetCarsDataDir() + "\\" + CCMTAvailableCarslistBox.SelectedItem;
 
-                        //Does it contain a number?
-                        if (temp.Any(char.IsDigit))
-                        {
-                            //Contains a number
-                            //We need to figure out what that number is
-                            int n;  //Variable to hold the file number
-                            int.TryParse(new string(temp.Where(a => Char.IsDigit(a)).ToArray()), out n);    //Get the file number
-                            n++;    //Inc it to the next one along
+                        //Get the new file name
+                        int n = GetNumberFromFilename(CCMTConfigslistBox.Items[CCMTConfigslistBox.Items.Count - 1].ToString());
+                        //We need to up it by 1 to get the next number
+                        n++;
+                        //Assemble the destination filename
+                        Dest += "\\config" + n.ToString() + ".txt";
 
-                            //Assemble the destination filename
-                            Dest += "\\config" + n.ToString() + ".txt";
-                        }
-                        else
-                        {
-                            //Does not contain a number
-                            //Only a single config file exists so the installed car config fill will be config1
-
-                            //Assemble the destination filename
-                            Dest += "\\config1.txt";
-                        }
                         //Copy the file, /Do not overwrite the destination file if it already exists
                         System.IO.File.Copy(fileresult, Dest, false);
                     }
@@ -465,60 +531,12 @@ namespace CMS2018ModManager
                 }
             }
         }
-
-        //Dialog box with a large text input field for pasting in a car data file as text
-        public static DialogResult CarConfigTextInputBox(ref string OutputValue)
-        {
-            //Setup object
-            Form form = new Form();
-            Label label = new Label();
-            TextBox textBox = new TextBox();
-            Button buttonOk = new Button();
-            Button buttonCancel = new Button();
-
-            form.Text = "Car Config File as text";
-            label.Text = "Please copy and paste the Car Config File text into the box below";
-            textBox.Text = OutputValue;
-
-            buttonOk.Text = "OK";
-            buttonCancel.Text = "Cancel";
-            buttonOk.DialogResult = DialogResult.OK;
-            buttonCancel.DialogResult = DialogResult.Cancel;
-
-            label.SetBounds(9, 10, 372, 13);
-            textBox.Multiline = true;
-            textBox.ScrollBars = ScrollBars.Vertical;
-            textBox.SetBounds(12, 36, 672, 820);
-            buttonOk.SetBounds(105, 872, 75, 23);
-            buttonCancel.SetBounds(186, 872, 75, 23);
-
-            label.AutoSize = true;
-            textBox.Anchor = textBox.Anchor | AnchorStyles.Right;
-            buttonOk.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            buttonCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-
-            form.ClientSize = new Size(696, 907);
-            form.Controls.AddRange(new Control[] { label, textBox, buttonOk, buttonCancel });
-            form.ClientSize = new Size(Math.Max(600, label.Right + 10), form.ClientSize.Height);
-            form.FormBorderStyle = FormBorderStyle.FixedDialog;
-            form.StartPosition = FormStartPosition.CenterScreen;
-            form.MinimizeBox = false;
-            form.MaximizeBox = false;
-            form.AcceptButton = buttonOk;
-            form.CancelButton = buttonCancel;
-
-            DialogResult dialogResult = form.ShowDialog();
-
-            //Get text
-            OutputValue = textBox.Text;
-            return dialogResult;
-        }
-
-        //Handles a call to new car config file from a text input
+        
+        //Handles a call to create a new car config file from a text input
         private void CCMTAddCarConfigfromtextbutton_Click(object sender, EventArgs e)
         {
             //Prompt the user to see if they are sure
-            DialogResult PromptResult = MessageBox.Show("This will create a new car config file using the supplied text\nAre you sure?", "Load Car Data Text", MessageBoxButtons.YesNo);
+            DialogResult PromptResult = MessageBox.Show("This will create a new car config file using the supplied text\nAre you sure?", "Load car config text", MessageBoxButtons.YesNo);
 
             if (PromptResult == DialogResult.Yes)
             {
@@ -530,17 +548,9 @@ namespace CMS2018ModManager
                     //If we returned with an OK
 
                     //Get the new file name
-                    string temp = CCMTConfigslistBox.Items[CCMTConfigslistBox.Items.Count - 1].ToString();
-                    int n = 1;  //Config file number, default of 1
-                    //Does it contain a number?
-                    if (temp.Any(char.IsDigit))
-                    {
-                        //Contains a number
-                        //We need to figure out what that number is
-                        int.TryParse(new string(temp.Where(a => Char.IsDigit(a)).ToArray()), out n);    //Get the file number
-                        n++;    //Inc it to the next one along
-                    }
-                    //Else Does not contain a number so default of 1 applies
+                    int n = GetNumberFromFilename(CCMTConfigslistBox.Items[CCMTConfigslistBox.Items.Count - 1].ToString());
+                    //We need to up it by 1 to get the next number
+                    n++;
 
                     //Save text to the car config file
                     //Assemble path name for the car config file
@@ -574,17 +584,9 @@ namespace CMS2018ModManager
                 if (PromptResult == DialogResult.Yes)
                 {
                     //Get the new file name
-                    string temp = CCMTConfigslistBox.Items[CCMTConfigslistBox.Items.Count - 1].ToString();
-                    int n = 1;  //Config file number, default of 1
-                    //Does it contain a number?
-                    if (temp.Any(char.IsDigit))
-                    {
-                        //Contains a number
-                        //We need to figure out what that number is
-                        int.TryParse(new string(temp.Where(a => Char.IsDigit(a)).ToArray()), out n);    //Get the file number
-                        n++;    //Inc it to the next one along
-                    }
-                    //Else Does not contain a number so default of 1 applies
+                    int n = GetNumberFromFilename(CCMTConfigslistBox.Items[CCMTConfigslistBox.Items.Count - 1].ToString());
+                    //We need to up it by 1 to get the next number
+                    n++;
 
                     //Assemble path name for the car config file
                     string Dest = ModManConfig.GetCarsDataDir() + "\\" + CCMTAvailableCarslistBox.SelectedItem + "\\config" + n.ToString() + ".txt";
@@ -646,31 +648,14 @@ namespace CMS2018ModManager
             }
         }
 
-        //Handles a call to add a missing body config file
-        private void CCMTAddMissingBodyConfigbutton_Click(object sender, EventArgs e)
+        //Handles a call to create a new body config file   //NOT USED
+        private void CCMTCreateNewBodyConfigbutton_Click(object sender, EventArgs e)
         {
-            //Get the index of the selected car data file
-            int Index = CCMTConfigslistBox.SelectedIndex;
-            //Check if a line has been selected
-            if (Index > -1)
-            {
-                //Prompt the user to see if they are sure
-                DialogResult PromptResult = MessageBox.Show("This will create a car body config file for the selected car config file\n" +
-                                                            "The body config file will be a copy of the first body config file\n" + 
-                                                            "\nAre you sure?", "Add Missing Car body Config File", MessageBoxButtons.YesNo);
-
-                if (PromptResult == DialogResult.Yes)
-                {
-                    //Assemble path name for the car body config file
-                    string Dest = ModManConfig.GetCarsDataDir() + "\\" + CCMTAvailableCarslistBox.SelectedItem + "\\body" + CCMTConfigslistBox.SelectedItem + ".txt";
-                    //Assemble path name for the car body config file
-                    string Source = ModManConfig.GetCarsDataDir() + "\\" + CCMTAvailableCarslistBox.SelectedItem + "\\bodyconfig.txt";
-                    //Copy the file, /Do not overwrite the destination file if it already exists
-                    System.IO.File.Copy(Source, Dest, false);
-                }
-                //Call the fuction to fill out the configs listbox
-                SummariseCarConfigFiles(CCMTAvailableCarslistBox.SelectedItem.ToString());
-            }
+            //Here as it matches the car config GUI buttons and methods
+            //However I can't think of a need as if a new car is being setup
+            //the create car config button will also create the body config file
+            
+            //So I've hid the button for now
         }
 
         //Handles a call to remove a car body config
@@ -698,7 +683,135 @@ namespace CMS2018ModManager
                 SummariseCarConfigFiles(CCMTAvailableCarslistBox.SelectedItem.ToString());
             }
         }
-        
+
+        //Handles a call to create a new body config file
+        private void CCMTAddBodyConfigFromFilebutton_Click(object sender, EventArgs e)
+        {
+            //Prompt the user to see if they are sure
+            DialogResult PromptResult = MessageBox.Show("This will load a new body config file into the currently selected car directory,\n" +
+                                                        "for currently selected car config\n" +
+                                                        "If a body config files exists it will be overwritten\n" +
+                                                        /* "Text or zip files can be used\n" + */
+                                                        "\nAre you sure?", "Load Car Config File", MessageBoxButtons.YesNo);
+
+            if (PromptResult == DialogResult.Yes)
+            {
+                //Open up a file browser
+                OpenFileDialog ofd = new OpenFileDialog();
+                // Set filter options and filter index.
+                //ofd.Filter = "All Config Files (*.txt, *.zip)|*.txt;*.zip";
+                ofd.Filter = "All Config Files (*.txt)|*.txt";  //Disable zip stuff until I have the brain power to process their contents
+                ofd.FilterIndex = 1;
+
+                // Show the dialog and get result.
+                DialogResult result = ofd.ShowDialog();
+                if (result == DialogResult.OK) // Test result.
+                {
+                    string fileresult = ofd.FileName;
+                    string fileextension = Path.GetExtension(fileresult);
+                    if (fileextension == ".txt")
+                    {
+                        //Do text file stuff
+
+                        //Get the new file name
+                        string temp = CCMTConfigslistBox.SelectedItem.ToString();
+                        string Dest = ModManConfig.GetCarsDataDir() + "\\" + CCMTAvailableCarslistBox.SelectedItem;
+
+                        //Get the config file number
+                        int n = GetNumberFromFilename(temp);
+                        //Assemble the destination filename
+                        Dest += "\\bodyconfig" + n.ToString() + ".txt";
+
+                        //Copy the file, /Will overwrite the destination file if it already exists
+                        System.IO.File.Copy(fileresult, Dest, true);
+                    }
+                    else    //Do Zip file stuff
+                    {
+                        string zipPath = fileresult;    //The source zip file
+                        string extractPath = ModManConfig.GetCarsDataDir() + "\\" + CCMTAvailableCarslistBox.SelectedItem + "\\Unzip folder";   //Folder to extract too
+
+                        ZipFile.ExtractToDirectory(zipPath, extractPath);
+                        //Now we need to process the contents of the zip file
+                    }
+                    //Call the fuction to fill out the configs listbox
+                    SummariseCarConfigFiles(CCMTAvailableCarslistBox.SelectedItem.ToString());
+                }
+            }
+        }
+
+        //Handles a call to create a new body config file from a text input
+        private void CCMTAddBodyConfigFromTextbutton_Click(object sender, EventArgs e)
+        {
+            //Prompt the user to see if they are sure
+            DialogResult PromptResult = MessageBox.Show("This will load a new body config file into the currently selected car directory,\n" +
+                                                        "for currently selected car config\n" +
+                                                        "If a body config files exists it will be overwritten\n" +
+                                                        /* "Text or zip files can be used\n" + */
+                                                        "\nAre you sure?", "Load Car Config File", MessageBoxButtons.YesNo);
+
+            if (PromptResult == DialogResult.Yes)
+            {
+                //Local to Hold the return
+                string CarDataText = "";
+                //Call the dialog to get the result
+                if (CarConfigTextInputBox(ref CarDataText) == DialogResult.OK)
+                {
+                    //If we returned with an OK
+
+                    //Get the new file name
+                    string temp = CCMTConfigslistBox.SelectedItem.ToString();
+                    string Dest = ModManConfig.GetCarsDataDir() + "\\" + CCMTAvailableCarslistBox.SelectedItem;
+
+                    //Get the config file number
+                    int n = GetNumberFromFilename(temp);
+                    //Assemble the destination filename
+                    Dest += "\\bodyconfig" + n.ToString() + ".txt";
+
+                    //Create a local file writer
+                    StreamWriter writer = new StreamWriter(Dest);
+                    writer.WriteLine(CarDataText);
+                    //we are finished with the writer so close and bin it
+                    writer.Close();
+                    writer.Dispose();
+
+                    //Call the fuction to fill out the configs listbox
+                    SummariseCarConfigFiles(CCMTAvailableCarslistBox.SelectedItem.ToString());
+                }
+            }
+        }
+
+        //Handles a call to add a missing body config file
+        private void CCMTAddMissingBodyConfigbutton_Click(object sender, EventArgs e)
+        {
+            //Get the index of the selected car data file
+            int Index = CCMTConfigslistBox.SelectedIndex;
+            //Check if a line has been selected
+            if (Index > -1)
+            {
+                //Prompt the user to see if they are sure
+                DialogResult PromptResult = MessageBox.Show("This will create a car body config file for the selected car config file\n" +
+                                                            "The body config file will be a copy of the first body config file\n" +
+                                                            "\nAre you sure?", "Add Missing Car body Config File", MessageBoxButtons.YesNo);
+
+                if (PromptResult == DialogResult.Yes)
+                {
+                    //Assemble path name for the car body config file
+                    string Dest = ModManConfig.GetCarsDataDir() + "\\" + CCMTAvailableCarslistBox.SelectedItem + "\\body" + CCMTConfigslistBox.SelectedItem + ".txt";
+                    //Assemble path name for the car body config file
+                    string Source = ModManConfig.GetCarsDataDir() + "\\" + CCMTAvailableCarslistBox.SelectedItem + "\\bodyconfig.txt";
+
+                    //Check if the file does not aready exist
+                    if (!File.Exists(Dest))
+                    {
+                        //Copy the file, /Do not overwrite the destination file if it already exists
+                        System.IO.File.Copy(Source, Dest, false);
+
+                        //Call the fuction to fill out the configs listbox
+                        SummariseCarConfigFiles(CCMTAvailableCarslistBox.SelectedItem.ToString());
+                    }
+                }
+            }
+        }
         #endregion Car List
     }
 }
