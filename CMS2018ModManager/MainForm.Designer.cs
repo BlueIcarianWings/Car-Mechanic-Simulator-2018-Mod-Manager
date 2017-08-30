@@ -64,9 +64,18 @@
             this.SGTProfilesFoundlabel = new System.Windows.Forms.Label();
             this.SGETProfilecomboBox = new System.Windows.Forms.ComboBox();
             this.SGETProfilelabel = new System.Windows.Forms.Label();
+            this.InstallModCarstabPage = new System.Windows.Forms.TabPage();
+            this.IMCpanel = new System.Windows.Forms.Panel();
+            this.IMCRemoveSelectedCarModbutton = new System.Windows.Forms.Button();
+            this.IMCInstalledModCarsCountlabel = new System.Windows.Forms.Label();
+            this.IMCInstallNewModCarbutton = new System.Windows.Forms.Button();
+            this.IMCModCarsInstalledlistBox = new System.Windows.Forms.ListBox();
+            this.IMCModCarsInstalledlabel = new System.Windows.Forms.Label();
             this.CarConfigtabPage = new System.Windows.Forms.TabPage();
             this.CCMTpanel = new System.Windows.Forms.Panel();
+            this.CCMTCarPicturepictureBox = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.CCMTAddMissingBodyConfigbutton = new System.Windows.Forms.Button();
             this.CCMTAddBodyConfigFromTextbutton = new System.Windows.Forms.Button();
             this.CCMTAddBodyConfigFromFilebutton = new System.Windows.Forms.Button();
             this.CCMTDeleteBodyConfigbutton = new System.Windows.Forms.Button();
@@ -97,8 +106,14 @@
             this.setCarConfigDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.CCMTAddMissingBodyConfigbutton = new System.Windows.Forms.Button();
-            this.CCMTCarPicturepictureBox = new System.Windows.Forms.PictureBox();
+            this.IMCCarPicturepictureBox = new System.Windows.Forms.PictureBox();
+            this.InstallModDialstabPage = new System.Windows.Forms.TabPage();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.IMDRemoveSelectedDialModbutton = new System.Windows.Forms.Button();
+            this.IMDInstalledModDialsCountlabel = new System.Windows.Forms.Label();
+            this.IMDInstallNewModDialbutton = new System.Windows.Forms.Button();
+            this.IMDModDialsInstalledlistBox = new System.Windows.Forms.ListBox();
+            this.IMDModDialsInstalledlabel = new System.Windows.Forms.Label();
             this.MaintabControl.SuspendLayout();
             this.SaveEditortabPage.SuspendLayout();
             this.SaveGameEditorTabtabControl.SuspendLayout();
@@ -116,17 +131,24 @@
             ((System.ComponentModel.ISupportInitialize)(this.SGETGMoneyIncomeCarsnumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SGETGMoneyIncomePartsnumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SGETGPartsRepairednumericUpDown)).BeginInit();
+            this.InstallModCarstabPage.SuspendLayout();
+            this.IMCpanel.SuspendLayout();
             this.CarConfigtabPage.SuspendLayout();
             this.CCMTpanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.CCMTCarPicturepictureBox)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.CCMTCCCgroupBox.SuspendLayout();
             this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.CCMTCarPicturepictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.IMCCarPicturepictureBox)).BeginInit();
+            this.InstallModDialstabPage.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // MaintabControl
             // 
             this.MaintabControl.Controls.Add(this.SaveEditortabPage);
+            this.MaintabControl.Controls.Add(this.InstallModCarstabPage);
+            this.MaintabControl.Controls.Add(this.InstallModDialstabPage);
             this.MaintabControl.Controls.Add(this.CarConfigtabPage);
             this.MaintabControl.Location = new System.Drawing.Point(13, 27);
             this.MaintabControl.Name = "MaintabControl";
@@ -545,6 +567,77 @@
             this.SGETProfilelabel.TabIndex = 0;
             this.SGETProfilelabel.Text = "Currently Selected Profile";
             // 
+            // InstallModCarstabPage
+            // 
+            this.InstallModCarstabPage.Controls.Add(this.IMCpanel);
+            this.InstallModCarstabPage.Controls.Add(this.IMCModCarsInstalledlistBox);
+            this.InstallModCarstabPage.Controls.Add(this.IMCModCarsInstalledlabel);
+            this.InstallModCarstabPage.Location = new System.Drawing.Point(4, 22);
+            this.InstallModCarstabPage.Name = "InstallModCarstabPage";
+            this.InstallModCarstabPage.Size = new System.Drawing.Size(877, 597);
+            this.InstallModCarstabPage.TabIndex = 2;
+            this.InstallModCarstabPage.Text = "Install Mod Cars";
+            this.InstallModCarstabPage.UseVisualStyleBackColor = true;
+            // 
+            // IMCpanel
+            // 
+            this.IMCpanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.IMCpanel.Controls.Add(this.IMCCarPicturepictureBox);
+            this.IMCpanel.Controls.Add(this.IMCRemoveSelectedCarModbutton);
+            this.IMCpanel.Controls.Add(this.IMCInstalledModCarsCountlabel);
+            this.IMCpanel.Controls.Add(this.IMCInstallNewModCarbutton);
+            this.IMCpanel.Location = new System.Drawing.Point(202, 24);
+            this.IMCpanel.Name = "IMCpanel";
+            this.IMCpanel.Size = new System.Drawing.Size(672, 297);
+            this.IMCpanel.TabIndex = 2;
+            // 
+            // IMCRemoveSelectedCarModbutton
+            // 
+            this.IMCRemoveSelectedCarModbutton.Location = new System.Drawing.Point(4, 63);
+            this.IMCRemoveSelectedCarModbutton.Name = "IMCRemoveSelectedCarModbutton";
+            this.IMCRemoveSelectedCarModbutton.Size = new System.Drawing.Size(145, 23);
+            this.IMCRemoveSelectedCarModbutton.TabIndex = 2;
+            this.IMCRemoveSelectedCarModbutton.Text = "Remove Selected Car Mod";
+            this.IMCRemoveSelectedCarModbutton.UseVisualStyleBackColor = true;
+            this.IMCRemoveSelectedCarModbutton.Click += new System.EventHandler(this.IMCRemoveSelectedCarModbutton_Click);
+            // 
+            // IMCInstalledModCarsCountlabel
+            // 
+            this.IMCInstalledModCarsCountlabel.AutoSize = true;
+            this.IMCInstalledModCarsCountlabel.Location = new System.Drawing.Point(4, 4);
+            this.IMCInstalledModCarsCountlabel.Name = "IMCInstalledModCarsCountlabel";
+            this.IMCInstalledModCarsCountlabel.Size = new System.Drawing.Size(111, 13);
+            this.IMCInstalledModCarsCountlabel.TabIndex = 1;
+            this.IMCInstalledModCarsCountlabel.Text = "No Mod Cars Installed";
+            // 
+            // IMCInstallNewModCarbutton
+            // 
+            this.IMCInstallNewModCarbutton.Location = new System.Drawing.Point(3, 33);
+            this.IMCInstallNewModCarbutton.Name = "IMCInstallNewModCarbutton";
+            this.IMCInstallNewModCarbutton.Size = new System.Drawing.Size(145, 23);
+            this.IMCInstallNewModCarbutton.TabIndex = 0;
+            this.IMCInstallNewModCarbutton.Text = "Install New Mod Car";
+            this.IMCInstallNewModCarbutton.UseVisualStyleBackColor = true;
+            this.IMCInstallNewModCarbutton.Click += new System.EventHandler(this.IMCInstallNewModCarbutton_Click);
+            // 
+            // IMCModCarsInstalledlistBox
+            // 
+            this.IMCModCarsInstalledlistBox.FormattingEnabled = true;
+            this.IMCModCarsInstalledlistBox.Location = new System.Drawing.Point(10, 24);
+            this.IMCModCarsInstalledlistBox.Name = "IMCModCarsInstalledlistBox";
+            this.IMCModCarsInstalledlistBox.Size = new System.Drawing.Size(185, 563);
+            this.IMCModCarsInstalledlistBox.TabIndex = 1;
+            this.IMCModCarsInstalledlistBox.SelectedIndexChanged += new System.EventHandler(this.IMCModCarsInstalledlistBox_SelectedIndexChanged);
+            // 
+            // IMCModCarsInstalledlabel
+            // 
+            this.IMCModCarsInstalledlabel.AutoSize = true;
+            this.IMCModCarsInstalledlabel.Location = new System.Drawing.Point(7, 7);
+            this.IMCModCarsInstalledlabel.Name = "IMCModCarsInstalledlabel";
+            this.IMCModCarsInstalledlabel.Size = new System.Drawing.Size(94, 13);
+            this.IMCModCarsInstalledlabel.TabIndex = 0;
+            this.IMCModCarsInstalledlabel.Text = "Mod Cars Installed";
+            // 
             // CarConfigtabPage
             // 
             this.CarConfigtabPage.Controls.Add(this.CCMTpanel);
@@ -576,6 +669,15 @@
             this.CCMTpanel.Size = new System.Drawing.Size(666, 478);
             this.CCMTpanel.TabIndex = 2;
             // 
+            // CCMTCarPicturepictureBox
+            // 
+            this.CCMTCarPicturepictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.CCMTCarPicturepictureBox.Location = new System.Drawing.Point(143, 212);
+            this.CCMTCarPicturepictureBox.Name = "CCMTCarPicturepictureBox";
+            this.CCMTCarPicturepictureBox.Size = new System.Drawing.Size(512, 256);
+            this.CCMTCarPicturepictureBox.TabIndex = 12;
+            this.CCMTCarPicturepictureBox.TabStop = false;
+            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.CCMTAddMissingBodyConfigbutton);
@@ -589,6 +691,16 @@
             this.groupBox1.TabIndex = 11;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Body Config Commands";
+            // 
+            // CCMTAddMissingBodyConfigbutton
+            // 
+            this.CCMTAddMissingBodyConfigbutton.Location = new System.Drawing.Point(157, 19);
+            this.CCMTAddMissingBodyConfigbutton.Name = "CCMTAddMissingBodyConfigbutton";
+            this.CCMTAddMissingBodyConfigbutton.Size = new System.Drawing.Size(145, 23);
+            this.CCMTAddMissingBodyConfigbutton.TabIndex = 13;
+            this.CCMTAddMissingBodyConfigbutton.Text = "Add Missing Body Config";
+            this.CCMTAddMissingBodyConfigbutton.UseVisualStyleBackColor = true;
+            this.CCMTAddMissingBodyConfigbutton.Click += new System.EventHandler(this.CCMTAddMissingBodyConfigbutton_Click);
             // 
             // CCMTAddBodyConfigFromTextbutton
             // 
@@ -858,24 +970,85 @@
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
-            // CCMTAddMissingBodyConfigbutton
+            // IMCCarPicturepictureBox
             // 
-            this.CCMTAddMissingBodyConfigbutton.Location = new System.Drawing.Point(157, 19);
-            this.CCMTAddMissingBodyConfigbutton.Name = "CCMTAddMissingBodyConfigbutton";
-            this.CCMTAddMissingBodyConfigbutton.Size = new System.Drawing.Size(145, 23);
-            this.CCMTAddMissingBodyConfigbutton.TabIndex = 13;
-            this.CCMTAddMissingBodyConfigbutton.Text = "Add Missing Body Config";
-            this.CCMTAddMissingBodyConfigbutton.UseVisualStyleBackColor = true;
-            this.CCMTAddMissingBodyConfigbutton.Click += new System.EventHandler(this.CCMTAddMissingBodyConfigbutton_Click);
+            this.IMCCarPicturepictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.IMCCarPicturepictureBox.Location = new System.Drawing.Point(155, 33);
+            this.IMCCarPicturepictureBox.Name = "IMCCarPicturepictureBox";
+            this.IMCCarPicturepictureBox.Size = new System.Drawing.Size(512, 256);
+            this.IMCCarPicturepictureBox.TabIndex = 13;
+            this.IMCCarPicturepictureBox.TabStop = false;
             // 
-            // CCMTCarPicturepictureBox
+            // InstallModDialstabPage
             // 
-            this.CCMTCarPicturepictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.CCMTCarPicturepictureBox.Location = new System.Drawing.Point(143, 212);
-            this.CCMTCarPicturepictureBox.Name = "CCMTCarPicturepictureBox";
-            this.CCMTCarPicturepictureBox.Size = new System.Drawing.Size(512, 256);
-            this.CCMTCarPicturepictureBox.TabIndex = 12;
-            this.CCMTCarPicturepictureBox.TabStop = false;
+            this.InstallModDialstabPage.Controls.Add(this.panel1);
+            this.InstallModDialstabPage.Controls.Add(this.IMDModDialsInstalledlistBox);
+            this.InstallModDialstabPage.Controls.Add(this.IMDModDialsInstalledlabel);
+            this.InstallModDialstabPage.Location = new System.Drawing.Point(4, 22);
+            this.InstallModDialstabPage.Name = "InstallModDialstabPage";
+            this.InstallModDialstabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.InstallModDialstabPage.Size = new System.Drawing.Size(877, 597);
+            this.InstallModDialstabPage.TabIndex = 3;
+            this.InstallModDialstabPage.Text = "Install Mod Dials";
+            this.InstallModDialstabPage.UseVisualStyleBackColor = true;
+            // 
+            // panel1
+            // 
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel1.Controls.Add(this.IMDRemoveSelectedDialModbutton);
+            this.panel1.Controls.Add(this.IMDInstalledModDialsCountlabel);
+            this.panel1.Controls.Add(this.IMDInstallNewModDialbutton);
+            this.panel1.Location = new System.Drawing.Point(202, 24);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(672, 297);
+            this.panel1.TabIndex = 5;
+            // 
+            // IMDRemoveSelectedDialModbutton
+            // 
+            this.IMDRemoveSelectedDialModbutton.Location = new System.Drawing.Point(4, 63);
+            this.IMDRemoveSelectedDialModbutton.Name = "IMDRemoveSelectedDialModbutton";
+            this.IMDRemoveSelectedDialModbutton.Size = new System.Drawing.Size(145, 23);
+            this.IMDRemoveSelectedDialModbutton.TabIndex = 2;
+            this.IMDRemoveSelectedDialModbutton.Text = "Remove Selected Dial Mod";
+            this.IMDRemoveSelectedDialModbutton.UseVisualStyleBackColor = true;
+            this.IMDRemoveSelectedDialModbutton.Click += new System.EventHandler(this.IMDRemoveSelectedDialModbutton_Click);
+            // 
+            // IMDInstalledModDialsCountlabel
+            // 
+            this.IMDInstalledModDialsCountlabel.AutoSize = true;
+            this.IMDInstalledModDialsCountlabel.Location = new System.Drawing.Point(4, 4);
+            this.IMDInstalledModDialsCountlabel.Name = "IMDInstalledModDialsCountlabel";
+            this.IMDInstalledModDialsCountlabel.Size = new System.Drawing.Size(113, 13);
+            this.IMDInstalledModDialsCountlabel.TabIndex = 1;
+            this.IMDInstalledModDialsCountlabel.Text = "No Mod Dials Installed";
+            // 
+            // IMDInstallNewModDialbutton
+            // 
+            this.IMDInstallNewModDialbutton.Location = new System.Drawing.Point(3, 33);
+            this.IMDInstallNewModDialbutton.Name = "IMDInstallNewModDialbutton";
+            this.IMDInstallNewModDialbutton.Size = new System.Drawing.Size(145, 23);
+            this.IMDInstallNewModDialbutton.TabIndex = 0;
+            this.IMDInstallNewModDialbutton.Text = "Install New Mod Dial";
+            this.IMDInstallNewModDialbutton.UseVisualStyleBackColor = true;
+            this.IMDInstallNewModDialbutton.Click += new System.EventHandler(this.IMDInstallNewModDialbutton_Click);
+            // 
+            // IMDModDialsInstalledlistBox
+            // 
+            this.IMDModDialsInstalledlistBox.FormattingEnabled = true;
+            this.IMDModDialsInstalledlistBox.Location = new System.Drawing.Point(10, 24);
+            this.IMDModDialsInstalledlistBox.Name = "IMDModDialsInstalledlistBox";
+            this.IMDModDialsInstalledlistBox.Size = new System.Drawing.Size(185, 563);
+            this.IMDModDialsInstalledlistBox.TabIndex = 4;
+            this.IMDModDialsInstalledlistBox.SelectedIndexChanged += new System.EventHandler(this.IMDModDialsInstalledlistBox_SelectedIndexChanged);
+            // 
+            // IMDModDialsInstalledlabel
+            // 
+            this.IMDModDialsInstalledlabel.AutoSize = true;
+            this.IMDModDialsInstalledlabel.Location = new System.Drawing.Point(7, 7);
+            this.IMDModDialsInstalledlabel.Name = "IMDModDialsInstalledlabel";
+            this.IMDModDialsInstalledlabel.Size = new System.Drawing.Size(96, 13);
+            this.IMDModDialsInstalledlabel.TabIndex = 3;
+            this.IMDModDialsInstalledlabel.Text = "Mod Dials Installed";
             // 
             // MainForm
             // 
@@ -906,15 +1079,24 @@
             ((System.ComponentModel.ISupportInitialize)(this.SGETGMoneyIncomeCarsnumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.SGETGMoneyIncomePartsnumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.SGETGPartsRepairednumericUpDown)).EndInit();
+            this.InstallModCarstabPage.ResumeLayout(false);
+            this.InstallModCarstabPage.PerformLayout();
+            this.IMCpanel.ResumeLayout(false);
+            this.IMCpanel.PerformLayout();
             this.CarConfigtabPage.ResumeLayout(false);
             this.CarConfigtabPage.PerformLayout();
             this.CCMTpanel.ResumeLayout(false);
             this.CCMTpanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.CCMTCarPicturepictureBox)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.CCMTCCCgroupBox.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.CCMTCarPicturepictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.IMCCarPicturepictureBox)).EndInit();
+            this.InstallModDialstabPage.ResumeLayout(false);
+            this.InstallModDialstabPage.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -993,6 +1175,21 @@
         private System.Windows.Forms.Button CCMTAddBodyConfigFromFilebutton;
         private System.Windows.Forms.Button CCMTAddMissingBodyConfigbutton;
         private System.Windows.Forms.PictureBox CCMTCarPicturepictureBox;
+        private System.Windows.Forms.TabPage InstallModCarstabPage;
+        private System.Windows.Forms.ListBox IMCModCarsInstalledlistBox;
+        private System.Windows.Forms.Label IMCModCarsInstalledlabel;
+        private System.Windows.Forms.Panel IMCpanel;
+        private System.Windows.Forms.Button IMCRemoveSelectedCarModbutton;
+        private System.Windows.Forms.Label IMCInstalledModCarsCountlabel;
+        private System.Windows.Forms.Button IMCInstallNewModCarbutton;
+        private System.Windows.Forms.PictureBox IMCCarPicturepictureBox;
+        private System.Windows.Forms.TabPage InstallModDialstabPage;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button IMDRemoveSelectedDialModbutton;
+        private System.Windows.Forms.Label IMDInstalledModDialsCountlabel;
+        private System.Windows.Forms.Button IMDInstallNewModDialbutton;
+        private System.Windows.Forms.ListBox IMDModDialsInstalledlistBox;
+        private System.Windows.Forms.Label IMDModDialsInstalledlabel;
     }
 }
 

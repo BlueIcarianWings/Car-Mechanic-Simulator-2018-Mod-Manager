@@ -9,13 +9,19 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;    //For streamReader, and directory info
 using System.IO.Compression;    //For Zip file stuff
+using System.Threading;
 
 namespace CMS2018ModManager
 {
     public partial class MainForm : Form
     {
-        private string ModManVersion = "0.1";       //Version constant for ModManager
-        private string GameVersion = "1.2.0";         //Version constant for the game
+        private string ModManVersion = "0.2";       //Version constant for ModManager
+        private string GameVersion = "1.2.7";       //Version constant for the game
+        //Lists to hold lists of mods   //Should probably move this stuff out into it's own class with the instal mod functions
+        List<string> CarsModList = new List<string>();       //Holds the list of cars
+        List<string> DialsModList = new List<string>();      //Holds the list of dials
+        //Currently running off the GUI
+        //Image ImageObject = null;
 
         //Class object for class that does the acutal mod managing stuff    //here so it's scope is within the form object  //should move the config stuff out at somepoint
         ConfigFile ModManConfig;
@@ -27,9 +33,6 @@ namespace CMS2018ModManager
 
             //Setup the class that does the acutal mod managing stuff
             ModManConfig = new ConfigFile();
-
-            //Populate the Available Cars list box
-            PopulateCarsAvailableList();
         }
 
         //stuff to do when the form is loaded
@@ -44,6 +47,15 @@ namespace CMS2018ModManager
             //Save Games Tab
             //Get the list of profiles
             PopulateProfileComboBox();
+
+            //Populate the Available Cars list box
+            PopulateCarsAvailableList();
+
+            //Populate the mod cars list GUI listbox
+            PopulateInstalledModCarsList();
+
+            //Populate the mod cars list GUI listbox
+            PopulateInstalledModDialsList();
         }
 
         #region Menu strip
@@ -813,5 +825,799 @@ namespace CMS2018ModManager
             }
         }
         #endregion Car List
+
+        #region Install Mod Cars
+
+        //Reads the mod cars list file and populates the GUI listbox
+        private void PopulateInstalledModCarsList()
+        {
+            //Assemble the file path to the mod car list file
+            string ModCarsList = ModManConfig.GetCarsDataDir() + "\\ModCarsList.txt";
+            //Check if the file exists
+            if (File.Exists(ModCarsList))
+            {
+                //Open and read the mod cars list
+                //create a streamReader to accses the config file
+                StreamReader reader = new StreamReader(ModCarsList);
+                //string to hold a single line
+                string line;
+
+                //loop through all of file a line at a time
+                while (true)
+                {
+                    //Read a line from the file
+                    line = reader.ReadLine();
+                    //check if line is null
+                    if (line == null)
+                    {
+                        break;  //exit loop if an empty line
+                    }
+                    else if(line.StartsWith("["))   //Header and notes row start with [
+                    {
+                        //Header line nothing to do
+                    }
+                    else
+                    {
+                        //Add the mod car to the list
+                        //if (line != "") //I've messed something up and it's adding blank lines somewhere  //Think it was duplication in copy/pasting the this function for the dial side
+                        //{
+                            CarsModList.Add(line);
+                        //}
+                    }
+                }
+
+                //we are finished with the reader so close and bin it
+                reader.Close();
+                reader.Dispose();
+            }
+            //No else as it(the mod file list) will be created when the first car is added
+
+            //Update the GUI
+            UpdateModCarsGUI();
+        }
+
+        //Handles a car mod being selected
+        private void IMCModCarsInstalledlistBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Get the car folder name
+            string CarConfigFolder = IMCModCarsInstalledlistBox.SelectedItem.ToString();
+
+            //Empty out the car picture box
+            IMCCarPicturepictureBox.Image = null;
+            //Set the picture
+            //Assemble the image filepath
+            string ImageFilepath = ModManConfig.GetCarsDataDir() + "\\" + CarConfigFolder + "\\PartThumb\\car_" + CarConfigFolder + "-car_" + CarConfigFolder + ".png";
+            if (File.Exists(ImageFilepath))
+            {
+                //Create the image
+                Image ImageObject = Image.FromFile(ImageFilepath);
+                //Fill out the picture box
+                IMCCarPicturepictureBox.Image = ImageObject;
+            }
+        }
+
+        //Writes the mod cars list file
+        private void WriteModCarsListFile()
+        {
+
+            try         //I think some people have problems with permissions, this will help 'skip-over' the file creation step
+            {
+                string Dest = ModManConfig.GetCarsDataDir() + "\\ModCarsList.txt";
+                using (StreamWriter writer = new StreamWriter(Dest))
+                {
+                    foreach (string Line in CarsModList)
+                    {
+                        if (CarsModList.Count > 1)
+                        {
+                            writer.WriteLine("\n" + Line);
+                        }
+                        else
+                        {
+                            writer.WriteLine(Line);
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                //Explain to the user
+                MessageBox.Show("There was a problem writing the Mod Cars List file.\nThis is probably access permissons related?\nThis may affect other file writes.\n", "File creation problem");
+            }
+        }
+
+        //Populate Mod Cars GUI listbox
+        private void UpdateModCarsGUI()
+        {
+            //Clear out the existing contents
+            IMCModCarsInstalledlistBox.Items.Clear();
+
+            //Fill out the GUI from the list of mod cars
+            foreach (string ModCar in CarsModList)
+            {
+                IMCModCarsInstalledlistBox.Items.Add(ModCar);
+            }
+
+            //Update the counter label
+            IMCInstalledModCarsCountlabel.Text = CarsModList.Count() + " Mod Cars installed";
+        }
+
+        //Determines if a folder or file is in an array, and returns it's index
+        private int ArrayContainsString(string[] StringList, string Search)
+        {
+            int index = -1;     //Return value, set to -1 as a default 'not found' value
+            int counter = 0;    //Array counter
+
+            foreach (string line in StringList)     //Loop through the array
+            {
+                    if (line.Contains(Search))           //Look in line
+                {
+                    index = counter;                //Fill out return
+                    break;                          //Exit the loop
+                }
+                counter++;
+            }
+
+            return index;
+        }
+
+        //Determines if a folder contains required folders or file
+        private bool[] RequiredFolderFileCheck(string[] StringList, string Location, bool Folder)
+        {
+            //StringList - Contains the items to look for
+            //Location the folder to look in
+            //Folder - True -> Looking for folders - False -> Looking for files
+            //ReturnList - Contains flags indicate if a wanted folder / file was found
+
+            string[] LocationList;            //Array to hold the list of items found in the search directory
+            bool[] ReturnList = new bool[StringList.Length];  //Need to fill this out with -1's to the same size as StringList
+            for (int i = 0; i < StringList.Length; i++)
+            {
+                ReturnList[i] = false;     //False is the not found value
+            }
+
+
+            //string[] LocationList1 = Directory.GetDirectories(Location);
+            //string[] LocationList2 = Directory.GetFiles(Location);
+
+            //Get the files or folders in the current directory
+            if (Folder)
+            {
+                LocationList = Directory.GetDirectories(Location);
+                //LocationList = LocationList1;
+            }
+            else
+            {
+                LocationList = Directory.GetFiles(Location);
+                //LocationList = LocationList2;
+            }
+
+            int LocationCounter = 0;    //Array counter
+            int ListCounter = 0;        //Array counter
+
+            //We will now search every result found in the folder, for every item in the list we are looking for
+            foreach (string line in LocationList)     //Loop through the array of items found in the search location
+            {
+                foreach (string SearchList in StringList)   //Loop throught the list of items we are searching for
+                {
+                    if (line.Contains(SearchList))          //Look in line
+                    {
+                        ReturnList[ListCounter] = true; //Fill out return
+                        break;                              //Exit the inner loop
+                    }
+                    ListCounter++;
+                }
+                ListCounter = 0;    //Reset before reuse in inner loop
+                LocationCounter++;
+            }
+
+            return ReturnList;
+        }
+
+        //Determines if an array contains at least one true
+        private bool ArrayContainsTrue(bool[] CheckArr)
+        {
+            //Setup the return value
+            bool ReturnValue = false;
+
+            foreach (bool check in CheckArr)
+            {
+                //
+                if(check)
+                {
+                    ReturnValue = true;
+                    break;
+                }
+            }
+
+            return ReturnValue;
+        }
+
+        //Installs a car into the selected directory
+        private void InstallModCar(string Source, string Target)
+        {
+            //string Dest = ModManConfig.GetCarsDataDir() + "\\" + Path.GetFileName(Source);
+            string Dest = ModManConfig.GetCarsDataDir() + "\\" + Target;
+            //First check the top level files
+            string[] FileWantedList = { "\\config.txt", "\\bodyconfig.txt", "\\name.txt", "\\parts.txt"};  //Items to work through the .cms needs different handling
+
+            foreach (string Entry in FileWantedList)
+            {
+                string FileFrom = Source + Entry;
+                String FileTo = Dest + Entry;
+                if (File.Exists(FileFrom))
+                {
+                    //Need to create the directory if it doesn't exist
+                    System.IO.Directory.CreateDirectory(Dest);
+                    System.IO.File.Copy(FileFrom, FileTo, true);
+                }
+            }
+
+            //Special handling for the .cms file
+            string[] FileList = Directory.GetFiles(Source);   //Get a list of the files in the source dir
+            foreach(string Entry in FileList)
+            {
+                string Extension = Path.GetExtension(Entry);
+                if(Extension == ".cms")
+                {
+                    String FileTo = Dest + "\\" + Path.GetFileName(Entry);
+                    System.IO.File.Copy(Entry, FileTo, true);
+                    break;
+                }
+            }
+
+            string[] FolderWantedList = { "\\Liveries", "\\PartThumb", "\\RustMaps" };
+            foreach (string Entry in FolderWantedList)
+            {
+                string FileFrom = Source + Entry;
+                String FileTo = Dest + Entry;
+                if (Directory.Exists(FileFrom))
+                {
+                    ModManConfig.DirectoryCopy(FileFrom, FileTo, false);
+                }
+            }
+
+            //Need to update the list of mods cars
+            CarsModList.Add(Target);
+            //Sort the list alphabetically
+            CarsModList.Sort();
+            //Update the GUI
+            UpdateModCarsGUI();
+            //Write the updated file;
+            WriteModCarsListFile();
+        }
+
+        //Handles a call to install a mod car
+        private void IMCInstallNewModCarbutton_Click(object sender, EventArgs e)
+        {
+            //Will need to unzip the zip file to a temp folder, inspect it, and copy over as needed
+
+            //Prompt the user to see if they are sure
+            DialogResult PromptResult = MessageBox.Show("This will install a new mod car (and dial if present) from a zip file\n\n" +
+                                                        "\nAre you sure?", "Install New Mod Car", MessageBoxButtons.YesNo);
+
+            if (PromptResult == DialogResult.Yes)
+            {
+                //Open up a file browser
+                OpenFileDialog ofd = new OpenFileDialog();
+                // Set filter options and filter index.
+                ofd.Filter = "All Config Files (*.zip)|*.zip";  //Limit to zip files
+                ofd.FilterIndex = 1;
+
+                // Show the dialog and get result.
+                DialogResult result = ofd.ShowDialog();
+                if (result == DialogResult.OK) // Test result.
+                {
+                    string fileresult = ofd.FileName;
+
+                    //Do Zip file stuff
+                    string zipPath = fileresult;         //The source zip file
+                    string extractPath = ModManConfig.GetCarsDataDir() + "\\Unzip folder";     //Folder to extract too
+
+                    //Check is the "Unzip folder" already exists and delete it if it does
+                    if (Directory.Exists(extractPath))
+                    {
+                        Directory.Delete(extractPath, true);
+                    }
+
+                    ZipFile.ExtractToDirectory(zipPath, extractPath);       //Extract the zip file
+                                                                            //Now we need to process the contents of the zip file
+
+                    //check for files and folders
+                    //if a single folder then inspect within it
+                    //when files are found, look for the required files
+                    //when we have found the right contents, make a note of the folder and check if it's already installed
+                    //if so check with the user before removing the old one and installing the new one
+                    //install if all is ok
+
+                    //Set where we start the search
+                    string CurrentSearchDir = extractPath;
+                    //Get the files and folders in the current directory
+                    string[] DirList = Directory.GetDirectories(CurrentSearchDir);
+                    string[] FileList = Directory.GetFiles(CurrentSearchDir);
+                    //Loop controller
+                    bool KeepSearching = true;
+                    //Strings to hold folder we think contain what we are searching for
+                    string CarModDir = null;
+                    string DialModDir = null;
+                    //Are we looking for a dial
+                    bool DialSearch = false;
+
+                    //Look for car mod folder, keep an eye out for the dials too
+                    while (KeepSearching)
+                    {
+                        if ((DirList.Length == 1) && (FileList.Length == 0))
+                        {
+                            //Contains a single folder and no files so move into it
+                            //Update the dir we are searching in
+                            CurrentSearchDir = DirList[0];
+                            //Clear out the existing search and check for files and folders again
+                            DirList = null;
+                            FileList = null;
+                            DirList = Directory.GetDirectories(CurrentSearchDir);
+                            FileList = Directory.GetFiles(CurrentSearchDir);
+                        }
+                        else if ((DirList.Length > 1) && (FileList.Length == 0))
+                        {
+                            //Contains 2 or more folders
+                            //This could be a "Cars" and "Dials" folder setup
+
+                            //Look for cars
+                            int Index = ArrayContainsString(DirList, "Cars");
+                            if (Index > -1)
+                            {
+                                CarModDir = DirList[Index];     //Save the possible car mod dir
+                                CurrentSearchDir = CarModDir;   //Update the search path
+                            }
+                            //Look for dials
+                            Index = ArrayContainsString(DirList, "Dials");
+                            if (Index > -1)
+                            {
+                                DialModDir = DirList[Index];     //Save the possible dial mod dir
+                            }
+
+                            //Clear out the existing search and check for files and folders again
+                            DirList = null;
+                            FileList = null;
+                            DirList = Directory.GetDirectories(CurrentSearchDir);
+                            FileList = Directory.GetFiles(CurrentSearchDir);
+                        }
+                        else if ((DirList.Length > 0) && (FileList.Length >= 3))
+                        {
+                            //Contains at least the three files need at least more than than the single dir needed
+
+                            //We may reach this point with having filled out the CarModDir (if this wasn't a Car and Dials folder)
+                            //Fill it out witht the current if not already filled out
+                            CarModDir = CurrentSearchDir;   //Update the search path
+
+                            //Are we looking for Car or Dial files?
+                            if (!DialSearch)     //If Not currently in Dial search mode (ie looking at cars)
+                            {
+                                //Investigate the folder found to contain files (check for minimum folders and files)
+                                //Folder check
+                                string[] FolderWantedList = { "PartThumb" };    //Optional "Liveries" "RustMaps"
+                                bool[] FolderCheckList = RequiredFolderFileCheck(FolderWantedList, CarModDir, true);
+                                //File check
+                                string[] FileWantedList = { "\\config.txt", "\\name.txt", ".cms" };     //Optional "bodyconfig.txt", "parts.txt"
+                                bool[] FileCheckList = RequiredFolderFileCheck(FileWantedList, CarModDir, false);
+
+                                //Check if any of the required bits came back false
+                                if ((ArrayContainsTrue(FolderCheckList)) && (ArrayContainsTrue(FileCheckList)))
+                                {
+                                    //We have a folder with enough folders / files in that we think it's a car so install it
+                                    string Target = Path.GetFileName(CarModDir);
+
+                                    //For cars directly in the zip we need decide what name to put the folder in
+                                    if (CarModDir == extractPath)
+                                    {
+                                        //Car mod contents is directly in the zip file
+                                        //This means we need to use the zip file name as the folder name
+                                        Target = Path.GetFileNameWithoutExtension(fileresult);
+                                    }
+
+                                    InstallModCar(CarModDir, Target);
+                                }
+
+                                //------------------------------
+                                //Should we also look for a dial?
+                                if (DialModDir != null)
+                                {
+                                    //We saved a possible dial mod dir, lets go and look at it
+                                    CurrentSearchDir = DialModDir;
+                                    DialSearch = true;
+
+                                    //Clear out the existing search and check for files and folders again
+                                    DirList = null;
+                                    FileList = null;
+                                    DirList = Directory.GetDirectories(CurrentSearchDir);
+                                    FileList = Directory.GetFiles(CurrentSearchDir);
+                                }
+                                else
+                                {
+                                    //No dial to look for car found time to exit
+                                    KeepSearching = false;
+                                }
+                                //------------------------------
+                            }
+                            //else    //Else we must be looking for a dial so process it's contents
+                            //{
+                                //Dials contain no subfolderso will never get in here
+                            //}                            
+                        }
+                        else if((DirList.Length == 0) && (FileList.Length == 3))    //Dial folder contains no sub folders
+                        {
+                            //Investigate the folder found to contain files (check for minimum folders and files)
+                            if (DialSearch)
+                            {
+                                //We may reach this point with having filled out the CarModDir (if this wasn't a Car and Dials folder)
+                                //Fill it out witht eh current if not already filled out
+                                CarModDir = CurrentSearchDir;   //Update the search path
+
+                                //File check
+                                string[] FileWantedList = { "\\config.txt", ".png" };
+                                bool[] FileCheckList = RequiredFolderFileCheck(FileWantedList, CarModDir, false);
+
+                                //Check if any of the required bits came back false
+                                if (ArrayContainsTrue(FileCheckList))
+                                {
+                                    //We have a folder with enough files in that we think it's a dial so install it
+                                    string Target = Path.GetFileName(CarModDir);
+                                    InstallModDial(CarModDir, Target);
+                                }
+                            }
+                            //No dial to look for car found time to exit
+                            KeepSearching = false;
+                        }
+                        else
+                        {
+                            //No files or folder present, time to exit
+                            KeepSearching = false;
+                        }
+                    }
+
+                    //Delete the unzip folder
+                    System.IO.Directory.Delete(extractPath, true);
+                }
+            }
+        }
+
+        //Handles a call to delete a mod car
+        private void IMCRemoveSelectedCarModbutton_Click(object sender, EventArgs e)
+        {
+            //Get the index of the selected car data file
+            int Index = IMCModCarsInstalledlistBox.SelectedIndex;
+            //Check if a line has been selected
+            if (Index > -1)
+            {
+                //Prompt the user to see if they are sure
+                DialogResult PromptResult = MessageBox.Show("This will delete the selected car mod and cannot be undone\n" +
+                                                            "\nAre you sure?", "Delete Car Mod", MessageBoxButtons.YesNo);
+
+                if (PromptResult == DialogResult.Yes)
+                {
+                    //Need to unload  the picture to release it before we can delete it
+                    //Empty out the car picture box
+                    if (IMCCarPicturepictureBox.Image != null)
+                    {
+                        IMCCarPicturepictureBox.Image.Dispose();
+                    }
+                    IMCCarPicturepictureBox.Image = null;
+
+                    //Get the folder path to remove
+                    string DeletePath = ModManConfig.GetCarsDataDir() + "\\" + IMCModCarsInstalledlistBox.SelectedItem.ToString();
+
+                    //I HATE doing this however it (the software) seems to need to keep the image file open while it's displaying it in the GUI
+                    //but it won't wait for the image to released before it tries to delete the image file.
+                    Thread.Sleep(40);    //In milliseconds
+
+                    //Delete the selected car mod directory
+                    System.IO.Directory.Delete(DeletePath, true);
+
+                    //Remove car from list of car mods
+                    CarsModList.RemoveAt(CarsModList.IndexOf(IMCModCarsInstalledlistBox.SelectedItem.ToString()));
+                    //Update the Mod Cars list file
+                    WriteModCarsListFile();
+                    //Update the GUI
+                    UpdateModCarsGUI();
+                }
+            }
+        }
+
+        #endregion
+
+        #region Install Mod Dials
+
+        //Reads the mod cars list file and populates the GUI
+        private void PopulateInstalledModDialsList()
+        {
+            //Assemble the file path to the mod car list file
+            string ModDialsList = ModManConfig.GetDialsDataDir() + "\\ModDialsList.txt";
+            //Check if the file exists
+            if (File.Exists(ModDialsList))
+            {
+                //Open and read the mod cars list
+                //create a streamReader to accses the config file
+                StreamReader reader = new StreamReader(ModDialsList);
+                //string to hold a single line
+                string line;
+
+                //loop through all of file a line at a time
+                while (true)
+                {
+                    //Read a line from the file
+                    line = reader.ReadLine();
+                    //check if line is null
+                    if (line == null)
+                    {
+                        break;  //exit loop if an empty line
+                    }
+                    else if (line.StartsWith("["))   //Header and notes row start with [
+                    {
+                        //Header line nothing to do
+                    }
+                    else
+                    {
+                        //Add the mod car to the list
+                        DialsModList.Add(line);
+                    }
+                }
+
+                //we are finished with the reader so close and bin it
+                reader.Close();
+                reader.Dispose();
+            }
+            //No else as it(the mod file list) will be created when the first car is added
+
+            //Update the GUI
+            UpdateModDialsGUI();
+        }
+
+        //Writes the mod dials list file
+        private void WriteModDialsListFile()
+        {
+
+            try         //I think some people have problems with permissions, this will help 'skip-over' the file creation step
+            {
+                string Dest = ModManConfig.GetDialsDataDir() + "\\ModDialsList.txt";
+                using (StreamWriter writer = new StreamWriter(Dest))
+                {
+                    foreach (string Line in CarsModList)
+                    {
+                        if (DialsModList.Count > 1)
+                        {
+                            writer.WriteLine("\n" + Line);
+                        }
+                        else
+                        {
+                            writer.WriteLine(Line);
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                //Explain to the user
+                MessageBox.Show("There was a problem writing the Mod Dials List file.\nThis is probably access permissons related?\nThis may affect other file writes.\n", "File creation problem");
+            }
+        }
+
+        //Populate Mod Cars GUI listbox
+        private void UpdateModDialsGUI()
+        {
+            //Clear out the existing contents
+            IMDModDialsInstalledlistBox.Items.Clear();
+
+            //Fill out the GUI from the list of mod cars
+            foreach (string ModDial in DialsModList)
+            {
+                IMDModDialsInstalledlistBox.Items.Add(ModDial);
+            }
+
+            //Update the counter label
+            IMDInstalledModDialsCountlabel.Text = CarsModList.Count() + " Mod Dials installed";
+        }
+
+        //Installs a car into the selected directory    //needs a recheck
+        private void InstallModDial(string Source, string Target)
+        {
+            //string Dest = ModManConfig.GetDialsDataDir() + Path.GetFileName(Source);
+            string Dest = ModManConfig.GetDialsDataDir() + Target;
+            //First check the top level files
+            string[] FileWantedList = { "\\config.txt" };  //Items to work through the .cms needs different handling
+
+            //Need to create the directory if it doesn't exist
+            System.IO.Directory.CreateDirectory(Dest);
+
+            foreach (string Entry in FileWantedList)
+            {
+                string FileFrom = Source + Entry;
+                String FileTo = Dest + Entry;
+                if (File.Exists(FileFrom))
+                {
+                    //Need to create the directory if it doesn't exist
+                    System.IO.Directory.CreateDirectory(Dest);
+                    System.IO.File.Copy(FileFrom, FileTo, true);
+                }
+            }
+
+            //Special handling for the .png files
+            //There are two png files required and they listed in the config.txt file
+            //For now a simply copy over all .png files
+            string[] FileList = Directory.GetFiles(Source);   //Get a list of the files in the source dir
+            foreach (string Entry in FileList)
+            {
+                string Extension = Path.GetExtension(Entry);
+                if (Extension == ".png")
+                {
+                    String FileTo = Dest + "\\" + Path.GetFileName(Entry);
+                    System.IO.File.Copy(Entry, FileTo, true);
+                }
+            }
+            //Need to update the list of mods dials
+            DialsModList.Add(Target);
+            //Sort the list alphabetically
+            DialsModList.Sort();
+            //Update the GUI
+            UpdateModDialsGUI();
+            //Write the updated file;
+            WriteModDialsListFile();
+        }
+
+        //Handles a dial mod being selected
+        private void IMDModDialsInstalledlistBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Nothing to do here until I display the dial images
+        }
+
+        //Handles a call to install a mod dial
+        private void IMDInstallNewModDialbutton_Click(object sender, EventArgs e)
+        {
+            //A LOT OF DUPLICATION with the car mod side, should really refactor this into a single function
+            //Will need to unzip the zip file to a temp folder, inspect it, and copy over as needed
+
+            //Prompt the user to see if they are sure
+            DialogResult PromptResult = MessageBox.Show("This will install a new mod dial from a zip file\n\n" +
+                                                        "\nAre you sure?", "Install New Mod Dial", MessageBoxButtons.YesNo);
+
+            if (PromptResult == DialogResult.Yes)
+            {
+                //Open up a file browser
+                OpenFileDialog ofd = new OpenFileDialog();
+                // Set filter options and filter index.
+                ofd.Filter = "All Config Files (*.zip)|*.zip";  //Limit to zip files
+                ofd.FilterIndex = 1;
+
+                // Show the dialog and get result.
+                DialogResult result = ofd.ShowDialog();
+                if (result == DialogResult.OK) // Test result.
+                {
+                    string fileresult = ofd.FileName;
+
+                    //Do Zip file stuff
+                    string zipPath = fileresult;         //The source zip file
+                    string extractPath = ModManConfig.GetDialsDataDir() + "\\Unzip folder";     //Folder to extract too
+
+                    //Check is the "Unzip folder" already exists and delete it if it does
+                    if (Directory.Exists(extractPath))
+                    {
+                        Directory.Delete(extractPath, true);
+                    }
+
+                    ZipFile.ExtractToDirectory(zipPath, extractPath);       //Extract the zip file
+                                                                            //Now we need to process the contents of the zip file
+
+                    //check for files and folders
+                    //if a single folder then inspect within it
+                    //when files are found, look for the required files
+                    //when we have found the right contents, make a note of the folder and check if it's already installed
+                    //if so check with the user before removing the old one and installing the new one
+                    //install if all is ok
+
+                    //Set where we start the search
+                    string CurrentSearchDir = extractPath;
+                    //Get the files and folders in the current directory
+                    string[] DirList = Directory.GetDirectories(CurrentSearchDir);
+                    string[] FileList = Directory.GetFiles(CurrentSearchDir);
+                    //Loop controller
+                    bool KeepSearching = true;
+                    //Strings to hold folder we think contain what we are searching for
+                    string DialModDir = null;
+
+                    //Look for car mod folder, keep an eye out for the dials too
+                    while (KeepSearching)
+                    {
+                        if ((DirList.Length == 1) && (FileList.Length == 0))
+                        {
+                            //Contains a single folder and no files so move into it
+                            //Update the dir we are searching in
+                            CurrentSearchDir = DirList[0];
+                            //Clear out the existing search and check for files and folders again
+                            DirList = null;
+                            FileList = null;
+                            DirList = Directory.GetDirectories(CurrentSearchDir);
+                            FileList = Directory.GetFiles(CurrentSearchDir);
+                        }
+                        else if ((DirList.Length == 0) && (FileList.Length == 3))    //Dial folder contains no sub folders
+                        {
+                            //Investigate the folder found to contain files (check for minimum folders and files)
+                            //We may reach this point with having filled out the CarModDir (if this wasn't a Car and Dials folder)
+                            //Fill it out witht eh current if not already filled out
+                            DialModDir = CurrentSearchDir;   //Update the search path
+
+                            //File check
+                            string[] FileWantedList = { "\\config.txt", ".png" };
+                            bool[] FileCheckList = RequiredFolderFileCheck(FileWantedList, DialModDir, false);
+
+                            //Check if any of the required bits came back false
+                            if (ArrayContainsTrue(FileCheckList))
+                            {
+                                //We have a folder with enough files in that we think it's a dial so install it
+                                string Target = Path.GetFileName(DialModDir);
+
+                                //For cars directly in the zip we need decide what name to put the folder in
+                                if (DialModDir == extractPath)
+                                {
+                                    //Car mod contents is directly in the zip file
+                                    //This means we need to use the zip file name as the folder name
+                                    Target = Path.GetFileNameWithoutExtension(fileresult);
+                                }
+
+                                InstallModDial(DialModDir, Target);
+                            }
+
+                            //Dial found time to exit
+                            KeepSearching = false;
+                        }
+                        else
+                        {
+                            //No files or folder present, time to exit
+                            KeepSearching = false;
+                        }
+                    }
+
+                    //Delete the unzip folder
+                    System.IO.Directory.Delete(extractPath, true);
+                }
+            }
+        }
+
+        //Handles a call to delete a mod dial
+        private void IMDRemoveSelectedDialModbutton_Click(object sender, EventArgs e)
+        {
+            //Get the index of the selected car data file
+            int Index = IMDModDialsInstalledlistBox.SelectedIndex;
+            //Check if a line has been selected
+            if (Index > -1)
+            {
+                //Prompt the user to see if they are sure
+                DialogResult PromptResult = MessageBox.Show("This will delete the selected dial mod and cannot be undone\n" +
+                                                            "\nAre you sure?", "Delete Dial Mod", MessageBoxButtons.YesNo);
+
+                if (PromptResult == DialogResult.Yes)
+                {
+                    //Need to unload  the picture to release it before we can delete it //Picture stuff is N/A at the moment
+                    //Empty out the car picture box
+                    //IMCCarPicturepictureBox.Image.Dispose();
+                    //IMCCarPicturepictureBox.Image = null;
+
+                    //Get the folder path to remove
+                    string DeletePath = ModManConfig.GetDialsDataDir() + "\\" + IMDModDialsInstalledlistBox.SelectedItem.ToString();
+
+                    //I HATE doing this however it (the software) seems to need to keep the image file open while it's displaying it in the GUI
+                    //but it won't wait for the image to released before it tries to delete the image file.
+                    //Thread.Sleep(40);    //In milliseconds
+
+                    //Delete the selected car mod directory
+                    System.IO.Directory.Delete(DeletePath, true);
+
+                    //Remove car from list of car mods
+                    DialsModList.RemoveAt(DialsModList.IndexOf(IMDModDialsInstalledlistBox.SelectedItem.ToString()));
+                    //Update the Mod Cars list file
+                    WriteModDialsListFile();
+                    //Update the GUI
+                    UpdateModDialsGUI();
+                }
+            }
+        }
+        #endregion
     }
 }

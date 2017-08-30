@@ -4,9 +4,17 @@ A modding and save file tool for editing and handling mods for Car Mechanic simu
 
 Discussion and release thread
 http://steamcommunity.com/app/645630/discussions/1/1470841715977918480/
+Github page
+https://github.com/BlueIcarianWings/Car-Mechanic-Simulator-2018-Mod-Manager
 //-------------------
 
 Release notes
+
+0.2
+30/Aug/2017
+Added the ability to install and remove car mods (will also install a dial mod if found)
+Added the ability to install and remove dial mods
+Will now keep a list of installed car mods and dial mods to make tracking your mods easier
 
 0.1.1
 19/Aug/2017

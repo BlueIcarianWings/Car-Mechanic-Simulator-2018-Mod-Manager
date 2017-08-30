@@ -16,11 +16,15 @@ namespace CMS2018ModManager
         private string SavedGamesDir = null;            //Holds the dir of the saved games
         private string SavedGamesDirBkUp = null;        //Holds the backup dir of the saved games
         //private string CarsDataDir = null;              //Holds the dir of the car data
-        //This needs to be set ahead of time as multi threading means it tries to use it before it's written!
+        //This needs to be set ahead of time as multi threading means it tries to use it before it's written!   //Might not be now, need to check
         private string CarsDataDir = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Car Mechanic Simulator 2018\\cms2018_Data\\StreamingAssets\\Cars\\";
         //private string CarsDataDirBkUpDefault = null;   //Holds the backup dir of the car 
         private string CarsDataDirBkUpMod = null;       //Holds the backup dir of the car 
         //private string ModMapDir = null;                //Holds the dir the custom maps live in
+        //This needs to be set ahead of time as multi threading means it tries to use it before it's written!   //Might not be now, need to check
+        private string DialsDataDir = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Car Mechanic Simulator 2018\\cms2018_Data\\StreamingAssets\\Dials\\";
+
+        //I need to add the DialsDataDir to the config file, I also should really reduce it down to just the install dir and build it up as needed
 
         #region Config stuff
         //The config stuff should be moved into it's own class
@@ -230,7 +234,7 @@ namespace CMS2018ModManager
             catch (Exception)
             {
                 //Explain to the user
-                MessageBox.Show("There was a problem writing the config file.\nThis is probably accses permissons related?\nThis may affect other file writes.\n\nChanged config paths will be used for not but will not remain when this application exits", "Config file creation problem");
+                MessageBox.Show("There was a problem writing the config file.\nThis is probably access permissons related?\nThis may affect other file writes.\n\nChanged config paths will be used for not but will not remain when this application exits", "Config file creation problem");
             }
 
         }
@@ -406,6 +410,17 @@ namespace CMS2018ModManager
             ModMapDir = Input;
         }
         */
+
+        public string GetDialsDataDir()
+        {
+            return DialsDataDir;
+        }
+
+        public void SetDialsDataDir(string Input)
+        {
+            DialsDataDir = Input;
+        }
+
         public string GetConfigDir()
         {
             return ConfigDir;
