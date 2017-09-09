@@ -66,11 +66,19 @@
             this.SGETProfilelabel = new System.Windows.Forms.Label();
             this.InstallModCarstabPage = new System.Windows.Forms.TabPage();
             this.IMCpanel = new System.Windows.Forms.Panel();
+            this.IMCCarPicturepictureBox = new System.Windows.Forms.PictureBox();
             this.IMCRemoveSelectedCarModbutton = new System.Windows.Forms.Button();
             this.IMCInstalledModCarsCountlabel = new System.Windows.Forms.Label();
             this.IMCInstallNewModCarbutton = new System.Windows.Forms.Button();
             this.IMCModCarsInstalledlistBox = new System.Windows.Forms.ListBox();
             this.IMCModCarsInstalledlabel = new System.Windows.Forms.Label();
+            this.InstallModDialstabPage = new System.Windows.Forms.TabPage();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.IMDRemoveSelectedDialModbutton = new System.Windows.Forms.Button();
+            this.IMDInstalledModDialsCountlabel = new System.Windows.Forms.Label();
+            this.IMDInstallNewModDialbutton = new System.Windows.Forms.Button();
+            this.IMDModDialsInstalledlistBox = new System.Windows.Forms.ListBox();
+            this.IMDModDialsInstalledlabel = new System.Windows.Forms.Label();
             this.CarConfigtabPage = new System.Windows.Forms.TabPage();
             this.CCMTpanel = new System.Windows.Forms.Panel();
             this.CCMTCarPicturepictureBox = new System.Windows.Forms.PictureBox();
@@ -106,14 +114,10 @@
             this.setCarConfigDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.IMCCarPicturepictureBox = new System.Windows.Forms.PictureBox();
-            this.InstallModDialstabPage = new System.Windows.Forms.TabPage();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.IMDRemoveSelectedDialModbutton = new System.Windows.Forms.Button();
-            this.IMDInstalledModDialsCountlabel = new System.Windows.Forms.Label();
-            this.IMDInstallNewModDialbutton = new System.Windows.Forms.Button();
-            this.IMDModDialsInstalledlistBox = new System.Windows.Forms.ListBox();
-            this.IMDModDialsInstalledlabel = new System.Windows.Forms.Label();
+            this.IMDDialImagepictureBox = new System.Windows.Forms.PictureBox();
+            this.IMDDialImagelabel = new System.Windows.Forms.Label();
+            this.IMDNeedleImagelabel = new System.Windows.Forms.Label();
+            this.IMDNeedleImagepictureBox = new System.Windows.Forms.PictureBox();
             this.MaintabControl.SuspendLayout();
             this.SaveEditortabPage.SuspendLayout();
             this.SaveGameEditorTabtabControl.SuspendLayout();
@@ -133,15 +137,17 @@
             ((System.ComponentModel.ISupportInitialize)(this.SGETGPartsRepairednumericUpDown)).BeginInit();
             this.InstallModCarstabPage.SuspendLayout();
             this.IMCpanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.IMCCarPicturepictureBox)).BeginInit();
+            this.InstallModDialstabPage.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.CarConfigtabPage.SuspendLayout();
             this.CCMTpanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CCMTCarPicturepictureBox)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.CCMTCCCgroupBox.SuspendLayout();
             this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.IMCCarPicturepictureBox)).BeginInit();
-            this.InstallModDialstabPage.SuspendLayout();
-            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.IMDDialImagepictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.IMDNeedleImagepictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // MaintabControl
@@ -591,6 +597,15 @@
             this.IMCpanel.Size = new System.Drawing.Size(672, 297);
             this.IMCpanel.TabIndex = 2;
             // 
+            // IMCCarPicturepictureBox
+            // 
+            this.IMCCarPicturepictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.IMCCarPicturepictureBox.Location = new System.Drawing.Point(155, 33);
+            this.IMCCarPicturepictureBox.Name = "IMCCarPicturepictureBox";
+            this.IMCCarPicturepictureBox.Size = new System.Drawing.Size(512, 256);
+            this.IMCCarPicturepictureBox.TabIndex = 13;
+            this.IMCCarPicturepictureBox.TabStop = false;
+            // 
             // IMCRemoveSelectedCarModbutton
             // 
             this.IMCRemoveSelectedCarModbutton.Location = new System.Drawing.Point(4, 63);
@@ -637,6 +652,81 @@
             this.IMCModCarsInstalledlabel.Size = new System.Drawing.Size(94, 13);
             this.IMCModCarsInstalledlabel.TabIndex = 0;
             this.IMCModCarsInstalledlabel.Text = "Mod Cars Installed";
+            // 
+            // InstallModDialstabPage
+            // 
+            this.InstallModDialstabPage.Controls.Add(this.panel1);
+            this.InstallModDialstabPage.Controls.Add(this.IMDModDialsInstalledlistBox);
+            this.InstallModDialstabPage.Controls.Add(this.IMDModDialsInstalledlabel);
+            this.InstallModDialstabPage.Location = new System.Drawing.Point(4, 22);
+            this.InstallModDialstabPage.Name = "InstallModDialstabPage";
+            this.InstallModDialstabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.InstallModDialstabPage.Size = new System.Drawing.Size(877, 597);
+            this.InstallModDialstabPage.TabIndex = 3;
+            this.InstallModDialstabPage.Text = "Install Mod Dials";
+            this.InstallModDialstabPage.UseVisualStyleBackColor = true;
+            // 
+            // panel1
+            // 
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel1.Controls.Add(this.IMDNeedleImagelabel);
+            this.panel1.Controls.Add(this.IMDNeedleImagepictureBox);
+            this.panel1.Controls.Add(this.IMDDialImagelabel);
+            this.panel1.Controls.Add(this.IMDDialImagepictureBox);
+            this.panel1.Controls.Add(this.IMDRemoveSelectedDialModbutton);
+            this.panel1.Controls.Add(this.IMDInstalledModDialsCountlabel);
+            this.panel1.Controls.Add(this.IMDInstallNewModDialbutton);
+            this.panel1.Location = new System.Drawing.Point(202, 24);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(672, 297);
+            this.panel1.TabIndex = 5;
+            // 
+            // IMDRemoveSelectedDialModbutton
+            // 
+            this.IMDRemoveSelectedDialModbutton.Location = new System.Drawing.Point(4, 63);
+            this.IMDRemoveSelectedDialModbutton.Name = "IMDRemoveSelectedDialModbutton";
+            this.IMDRemoveSelectedDialModbutton.Size = new System.Drawing.Size(145, 23);
+            this.IMDRemoveSelectedDialModbutton.TabIndex = 2;
+            this.IMDRemoveSelectedDialModbutton.Text = "Remove Selected Dial Mod";
+            this.IMDRemoveSelectedDialModbutton.UseVisualStyleBackColor = true;
+            this.IMDRemoveSelectedDialModbutton.Click += new System.EventHandler(this.IMDRemoveSelectedDialModbutton_Click);
+            // 
+            // IMDInstalledModDialsCountlabel
+            // 
+            this.IMDInstalledModDialsCountlabel.AutoSize = true;
+            this.IMDInstalledModDialsCountlabel.Location = new System.Drawing.Point(4, 4);
+            this.IMDInstalledModDialsCountlabel.Name = "IMDInstalledModDialsCountlabel";
+            this.IMDInstalledModDialsCountlabel.Size = new System.Drawing.Size(113, 13);
+            this.IMDInstalledModDialsCountlabel.TabIndex = 1;
+            this.IMDInstalledModDialsCountlabel.Text = "No Mod Dials Installed";
+            // 
+            // IMDInstallNewModDialbutton
+            // 
+            this.IMDInstallNewModDialbutton.Location = new System.Drawing.Point(4, 33);
+            this.IMDInstallNewModDialbutton.Name = "IMDInstallNewModDialbutton";
+            this.IMDInstallNewModDialbutton.Size = new System.Drawing.Size(145, 23);
+            this.IMDInstallNewModDialbutton.TabIndex = 0;
+            this.IMDInstallNewModDialbutton.Text = "Install New Mod Dial";
+            this.IMDInstallNewModDialbutton.UseVisualStyleBackColor = true;
+            this.IMDInstallNewModDialbutton.Click += new System.EventHandler(this.IMDInstallNewModDialbutton_Click);
+            // 
+            // IMDModDialsInstalledlistBox
+            // 
+            this.IMDModDialsInstalledlistBox.FormattingEnabled = true;
+            this.IMDModDialsInstalledlistBox.Location = new System.Drawing.Point(10, 24);
+            this.IMDModDialsInstalledlistBox.Name = "IMDModDialsInstalledlistBox";
+            this.IMDModDialsInstalledlistBox.Size = new System.Drawing.Size(185, 563);
+            this.IMDModDialsInstalledlistBox.TabIndex = 4;
+            this.IMDModDialsInstalledlistBox.SelectedIndexChanged += new System.EventHandler(this.IMDModDialsInstalledlistBox_SelectedIndexChanged);
+            // 
+            // IMDModDialsInstalledlabel
+            // 
+            this.IMDModDialsInstalledlabel.AutoSize = true;
+            this.IMDModDialsInstalledlabel.Location = new System.Drawing.Point(7, 7);
+            this.IMDModDialsInstalledlabel.Name = "IMDModDialsInstalledlabel";
+            this.IMDModDialsInstalledlabel.Size = new System.Drawing.Size(96, 13);
+            this.IMDModDialsInstalledlabel.TabIndex = 3;
+            this.IMDModDialsInstalledlabel.Text = "Mod Dials Installed";
             // 
             // CarConfigtabPage
             // 
@@ -970,85 +1060,41 @@
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
-            // IMCCarPicturepictureBox
+            // IMDDialImagepictureBox
             // 
-            this.IMCCarPicturepictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.IMCCarPicturepictureBox.Location = new System.Drawing.Point(155, 33);
-            this.IMCCarPicturepictureBox.Name = "IMCCarPicturepictureBox";
-            this.IMCCarPicturepictureBox.Size = new System.Drawing.Size(512, 256);
-            this.IMCCarPicturepictureBox.TabIndex = 13;
-            this.IMCCarPicturepictureBox.TabStop = false;
+            this.IMDDialImagepictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.IMDDialImagepictureBox.Location = new System.Drawing.Point(4, 109);
+            this.IMDDialImagepictureBox.Name = "IMDDialImagepictureBox";
+            this.IMDDialImagepictureBox.Size = new System.Drawing.Size(181, 181);
+            this.IMDDialImagepictureBox.TabIndex = 3;
+            this.IMDDialImagepictureBox.TabStop = false;
             // 
-            // InstallModDialstabPage
+            // IMDDialImagelabel
             // 
-            this.InstallModDialstabPage.Controls.Add(this.panel1);
-            this.InstallModDialstabPage.Controls.Add(this.IMDModDialsInstalledlistBox);
-            this.InstallModDialstabPage.Controls.Add(this.IMDModDialsInstalledlabel);
-            this.InstallModDialstabPage.Location = new System.Drawing.Point(4, 22);
-            this.InstallModDialstabPage.Name = "InstallModDialstabPage";
-            this.InstallModDialstabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.InstallModDialstabPage.Size = new System.Drawing.Size(877, 597);
-            this.InstallModDialstabPage.TabIndex = 3;
-            this.InstallModDialstabPage.Text = "Install Mod Dials";
-            this.InstallModDialstabPage.UseVisualStyleBackColor = true;
+            this.IMDDialImagelabel.AutoSize = true;
+            this.IMDDialImagelabel.Location = new System.Drawing.Point(4, 93);
+            this.IMDDialImagelabel.Name = "IMDDialImagelabel";
+            this.IMDDialImagelabel.Size = new System.Drawing.Size(57, 13);
+            this.IMDDialImagelabel.TabIndex = 4;
+            this.IMDDialImagelabel.Text = "Dial Image";
             // 
-            // panel1
+            // IMDNeedleImagelabel
             // 
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel1.Controls.Add(this.IMDRemoveSelectedDialModbutton);
-            this.panel1.Controls.Add(this.IMDInstalledModDialsCountlabel);
-            this.panel1.Controls.Add(this.IMDInstallNewModDialbutton);
-            this.panel1.Location = new System.Drawing.Point(202, 24);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(672, 297);
-            this.panel1.TabIndex = 5;
+            this.IMDNeedleImagelabel.AutoSize = true;
+            this.IMDNeedleImagelabel.Location = new System.Drawing.Point(191, 93);
+            this.IMDNeedleImagelabel.Name = "IMDNeedleImagelabel";
+            this.IMDNeedleImagelabel.Size = new System.Drawing.Size(73, 13);
+            this.IMDNeedleImagelabel.TabIndex = 6;
+            this.IMDNeedleImagelabel.Text = "Needle Image";
             // 
-            // IMDRemoveSelectedDialModbutton
+            // IMDNeedleImagepictureBox
             // 
-            this.IMDRemoveSelectedDialModbutton.Location = new System.Drawing.Point(4, 63);
-            this.IMDRemoveSelectedDialModbutton.Name = "IMDRemoveSelectedDialModbutton";
-            this.IMDRemoveSelectedDialModbutton.Size = new System.Drawing.Size(145, 23);
-            this.IMDRemoveSelectedDialModbutton.TabIndex = 2;
-            this.IMDRemoveSelectedDialModbutton.Text = "Remove Selected Dial Mod";
-            this.IMDRemoveSelectedDialModbutton.UseVisualStyleBackColor = true;
-            this.IMDRemoveSelectedDialModbutton.Click += new System.EventHandler(this.IMDRemoveSelectedDialModbutton_Click);
-            // 
-            // IMDInstalledModDialsCountlabel
-            // 
-            this.IMDInstalledModDialsCountlabel.AutoSize = true;
-            this.IMDInstalledModDialsCountlabel.Location = new System.Drawing.Point(4, 4);
-            this.IMDInstalledModDialsCountlabel.Name = "IMDInstalledModDialsCountlabel";
-            this.IMDInstalledModDialsCountlabel.Size = new System.Drawing.Size(113, 13);
-            this.IMDInstalledModDialsCountlabel.TabIndex = 1;
-            this.IMDInstalledModDialsCountlabel.Text = "No Mod Dials Installed";
-            // 
-            // IMDInstallNewModDialbutton
-            // 
-            this.IMDInstallNewModDialbutton.Location = new System.Drawing.Point(3, 33);
-            this.IMDInstallNewModDialbutton.Name = "IMDInstallNewModDialbutton";
-            this.IMDInstallNewModDialbutton.Size = new System.Drawing.Size(145, 23);
-            this.IMDInstallNewModDialbutton.TabIndex = 0;
-            this.IMDInstallNewModDialbutton.Text = "Install New Mod Dial";
-            this.IMDInstallNewModDialbutton.UseVisualStyleBackColor = true;
-            this.IMDInstallNewModDialbutton.Click += new System.EventHandler(this.IMDInstallNewModDialbutton_Click);
-            // 
-            // IMDModDialsInstalledlistBox
-            // 
-            this.IMDModDialsInstalledlistBox.FormattingEnabled = true;
-            this.IMDModDialsInstalledlistBox.Location = new System.Drawing.Point(10, 24);
-            this.IMDModDialsInstalledlistBox.Name = "IMDModDialsInstalledlistBox";
-            this.IMDModDialsInstalledlistBox.Size = new System.Drawing.Size(185, 563);
-            this.IMDModDialsInstalledlistBox.TabIndex = 4;
-            this.IMDModDialsInstalledlistBox.SelectedIndexChanged += new System.EventHandler(this.IMDModDialsInstalledlistBox_SelectedIndexChanged);
-            // 
-            // IMDModDialsInstalledlabel
-            // 
-            this.IMDModDialsInstalledlabel.AutoSize = true;
-            this.IMDModDialsInstalledlabel.Location = new System.Drawing.Point(7, 7);
-            this.IMDModDialsInstalledlabel.Name = "IMDModDialsInstalledlabel";
-            this.IMDModDialsInstalledlabel.Size = new System.Drawing.Size(96, 13);
-            this.IMDModDialsInstalledlabel.TabIndex = 3;
-            this.IMDModDialsInstalledlabel.Text = "Mod Dials Installed";
+            this.IMDNeedleImagepictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.IMDNeedleImagepictureBox.Location = new System.Drawing.Point(191, 109);
+            this.IMDNeedleImagepictureBox.Name = "IMDNeedleImagepictureBox";
+            this.IMDNeedleImagepictureBox.Size = new System.Drawing.Size(181, 181);
+            this.IMDNeedleImagepictureBox.TabIndex = 5;
+            this.IMDNeedleImagepictureBox.TabStop = false;
             // 
             // MainForm
             // 
@@ -1083,6 +1129,11 @@
             this.InstallModCarstabPage.PerformLayout();
             this.IMCpanel.ResumeLayout(false);
             this.IMCpanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.IMCCarPicturepictureBox)).EndInit();
+            this.InstallModDialstabPage.ResumeLayout(false);
+            this.InstallModDialstabPage.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.CarConfigtabPage.ResumeLayout(false);
             this.CarConfigtabPage.PerformLayout();
             this.CCMTpanel.ResumeLayout(false);
@@ -1092,11 +1143,8 @@
             this.CCMTCCCgroupBox.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.IMCCarPicturepictureBox)).EndInit();
-            this.InstallModDialstabPage.ResumeLayout(false);
-            this.InstallModDialstabPage.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.IMDDialImagepictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.IMDNeedleImagepictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1190,6 +1238,10 @@
         private System.Windows.Forms.Button IMDInstallNewModDialbutton;
         private System.Windows.Forms.ListBox IMDModDialsInstalledlistBox;
         private System.Windows.Forms.Label IMDModDialsInstalledlabel;
+        private System.Windows.Forms.Label IMDNeedleImagelabel;
+        private System.Windows.Forms.PictureBox IMDNeedleImagepictureBox;
+        private System.Windows.Forms.Label IMDDialImagelabel;
+        private System.Windows.Forms.PictureBox IMDDialImagepictureBox;
     }
 }
 

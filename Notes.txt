@@ -10,6 +10,16 @@ https://github.com/BlueIcarianWings/Car-Mechanic-Simulator-2018-Mod-Manager
 
 Release notes
 
+0.2.2
+9/Sep/2017
+Mod Dial images are now shown
+Fixed errors in saving the Mods lists
+Improved how the GUI images were handled to prevent crashes upon deleting a mod
+
+0.2.1
+9/Sep/2017
+Moved some functions in a new utilities class.
+
 0.2
 30/Aug/2017
 Added the ability to install and remove car mods (will also install a dial mod if found)

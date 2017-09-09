@@ -15,7 +15,7 @@ namespace CMS2018ModManager
 {
     public partial class MainForm : Form
     {
-        private string ModManVersion = "0.2.1";     //Version constant for ModManager
+        private string ModManVersion = "0.2.2";     //Version constant for ModManager
         private string GameVersion = "1.2.7";       //Version constant for the game
         //Lists to hold lists of mods   //Should probably move this stuff out into it's own class with the instal mod functions
         List<string> CarsModList = new List<string>();       //Holds the list of cars
@@ -405,10 +405,13 @@ namespace CMS2018ModManager
             string ImageFilepath = ModManConfig.GetCarsDataDir() + "\\" + CarConfigFolder + "\\PartThumb\\car_" + CarConfigFolder + "-car_" + CarConfigFolder + ".png";
             if (File.Exists(ImageFilepath))
             {
-                //Create the image
-                Image ImageObject = Image.FromFile(ImageFilepath);
-                //Fill out the picture box
-                CCMTCarPicturepictureBox.Image = ImageObject;
+                //Hopefully this method will allow me to use the image without 'still in use' problems
+                Image ImageObject;
+                using (var bmpTemp = new Bitmap(ImageFilepath))
+                {
+                    ImageObject = new Bitmap(bmpTemp);  //Create the image
+                    CCMTCarPicturepictureBox.Image = ImageObject;
+                }
             }
         }
 
@@ -863,20 +866,29 @@ namespace CMS2018ModManager
         //Handles a car mod being selected
         private void IMCModCarsInstalledlistBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //Get the car folder name
-            string CarConfigFolder = IMCModCarsInstalledlistBox.SelectedItem.ToString();
-
-            //Empty out the car picture box
-            IMCCarPicturepictureBox.Image = null;
-            //Set the picture
-            //Assemble the image filepath
-            string ImageFilepath = ModManConfig.GetCarsDataDir() + "\\" + CarConfigFolder + "\\PartThumb\\car_" + CarConfigFolder + "-car_" + CarConfigFolder + ".png";
-            if (File.Exists(ImageFilepath))
+            //Get the index of the selected car data file
+            int Index = IMCModCarsInstalledlistBox.SelectedIndex;
+            //Check if a line has been selected
+            if (Index > -1)
             {
-                //Create the image
-                Image ImageObject = Image.FromFile(ImageFilepath);
-                //Fill out the picture box
-                IMCCarPicturepictureBox.Image = ImageObject;
+                //Get the car folder name
+                string CarConfigFolder = IMCModCarsInstalledlistBox.SelectedItem.ToString();
+
+                //Empty out the car picture box
+                IMCCarPicturepictureBox.Image = null;
+                //Set the picture
+                //Assemble the image filepath
+                string ImageFilepath = ModManConfig.GetCarsDataDir() + "\\" + CarConfigFolder + "\\PartThumb\\car_" + CarConfigFolder + "-car_" + CarConfigFolder + ".png";
+                if (File.Exists(ImageFilepath))
+                {
+                    //Hopefully this method will allow me to use the image without 'still in use' problems
+                    Image ImageObject;
+                    using (var bmpTemp = new Bitmap(ImageFilepath))
+                    {
+                        ImageObject = new Bitmap(bmpTemp);  //Create the image
+                        IMCCarPicturepictureBox.Image = ImageObject;
+                    }
+                }
             }
         }
 
@@ -891,14 +903,7 @@ namespace CMS2018ModManager
                 {
                     foreach (string Line in CarsModList)
                     {
-                        if (CarsModList.Count > 1)
-                        {
-                            writer.WriteLine("\n" + Line);
-                        }
-                        else
-                        {
-                            writer.WriteLine(Line);
-                        }
+                        writer.WriteLine(Line);                      
                     }
                 }
             }
@@ -1198,10 +1203,6 @@ namespace CMS2018ModManager
                     //Get the folder path to remove
                     string DeletePath = ModManConfig.GetCarsDataDir() + "\\" + IMCModCarsInstalledlistBox.SelectedItem.ToString();
 
-                    //I HATE doing this however it (the software) seems to need to keep the image file open while it's displaying it in the GUI
-                    //but it won't wait for the image to released before it tries to delete the image file.
-                    Thread.Sleep(40);    //In milliseconds
-
                     //Delete the selected car mod directory
                     System.IO.Directory.Delete(DeletePath, true);
 
@@ -1273,16 +1274,9 @@ namespace CMS2018ModManager
                 string Dest = ModManConfig.GetDialsDataDir() + "\\ModDialsList.txt";
                 using (StreamWriter writer = new StreamWriter(Dest))
                 {
-                    foreach (string Line in CarsModList)
+                    foreach (string Line in DialsModList)
                     {
-                        if (DialsModList.Count > 1)
-                        {
-                            writer.WriteLine("\n" + Line);
-                        }
-                        else
-                        {
-                            writer.WriteLine(Line);
-                        }
+                        writer.WriteLine(Line);
                     }
                 }
             }
@@ -1306,7 +1300,9 @@ namespace CMS2018ModManager
             }
 
             //Update the counter label
-            IMDInstalledModDialsCountlabel.Text = CarsModList.Count() + " Mod Dials installed";
+            IMDInstalledModDialsCountlabel.Text = DialsModList.Count() + " Mod Dials installed";
+
+            //Picture box handling should be in here too really
         }
 
         //Installs a car into the selected directory    //needs a recheck
@@ -1358,7 +1354,85 @@ namespace CMS2018ModManager
         //Handles a dial mod being selected
         private void IMDModDialsInstalledlistBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //Nothing to do here until I display the dial images
+            //Get the index of the selected dial data file
+            int Index = IMDModDialsInstalledlistBox.SelectedIndex;
+            //Check if a line has been selected
+            if (Index > -1)
+            {
+                //Get dir we are currently in
+                string Target = ModManConfig.GetDialsDataDir() + IMDModDialsInstalledlistBox.SelectedItem.ToString() + "\\config.txt";
+                string DialTarget = ModManConfig.GetDialsDataDir() + IMDModDialsInstalledlistBox.SelectedItem.ToString() + "\\";
+                string NeedleTarget = ModManConfig.GetDialsDataDir() + IMDModDialsInstalledlistBox.SelectedItem.ToString() + "\\";
+
+                //Empty out the Dial and Needle picture box, this needs to happen if the file exists or not
+                IMDDialImagepictureBox.Image = null;
+                IMDNeedleImagepictureBox.Image = null;
+
+                //Get the files names for the Dial and Needle images from the dials config file
+                if (File.Exists(Target))  //Check if the config file exists
+                {
+                    //create a streamReader to accses the config file
+                    StreamReader reader = new StreamReader(Target);
+                    //string list (an array) to hold file output
+                    List<string> list = new List<string>();
+                    //string to hold a single line
+                    string line;
+
+                    //loop through all of file a line at a time
+                    while (true)
+                    {
+                        //Read a line from the file
+                        line = reader.ReadLine();
+                        //check if line is null
+                        if (line == null)
+                        {
+                            break;  //exit loop if an empty line
+                        }
+                        else if (line.Contains("dialSprite"))
+                        {
+                            //Assemble target to the dial
+                            DialTarget = ModManConfig.GetDialsDataDir() + IMDModDialsInstalledlistBox.SelectedItem.ToString() + "\\" + line.Substring(11);
+                        }
+                        else if (line.Contains("needleSprite"))
+                        {
+                            //Assemble target to the dial
+                            NeedleTarget = ModManConfig.GetDialsDataDir() + IMDModDialsInstalledlistBox.SelectedItem.ToString() + "\\" + line.Substring(13);
+                        }
+                        else
+                        {
+                            //Nothing
+                        }
+                    }
+
+                    //we are finished with the reader so close and bin it
+                    reader.Close();
+                    reader.Dispose();
+
+                    //Set the Dial picture
+                    if (File.Exists(DialTarget))
+                    {
+                        //Hopefully this method will allow me to use the image without 'still in use' problems
+                        Image DialImageObject;
+                        using (var bmpTemp = new Bitmap(DialTarget))
+                        {
+                            DialImageObject = new Bitmap(bmpTemp);  //Create the image
+                            DialImageObject = Utilities.ResizeImage(DialImageObject, 181, 181);   //Resize the image to fit the GUI box
+                            IMDDialImagepictureBox.Image = DialImageObject;
+                        }
+                    }
+                    //Set the Needle picture
+                    if (File.Exists(NeedleTarget))
+                    {
+                        Image NeedleImageObject;
+                        using (var bmpTemp = new Bitmap(NeedleTarget))
+                        {
+                            NeedleImageObject = new Bitmap(bmpTemp);  //Create the image
+                            NeedleImageObject = Utilities.ResizeImage(NeedleImageObject, 181, 181);   //Resize the image to fit the GUI box
+                            IMDNeedleImagepictureBox.Image = NeedleImageObject;
+                        }
+                    }
+                }
+            }
         }
 
         //Handles a call to install a mod dial
@@ -1487,17 +1561,22 @@ namespace CMS2018ModManager
 
                 if (PromptResult == DialogResult.Yes)
                 {
-                    //Need to unload  the picture to release it before we can delete it //Picture stuff is N/A at the moment
-                    //Empty out the car picture box
-                    //IMCCarPicturepictureBox.Image.Dispose();
-                    //IMCCarPicturepictureBox.Image = null;
+                    //Need to unload  the pictures to release them before we can delete them
+                    //Empty out the Dial picture box
+                    if (IMDDialImagepictureBox.Image != null)
+                    {
+                        IMDDialImagepictureBox.Image.Dispose();
+                    }
+                    IMDDialImagepictureBox.Image = null;
+                    //Empty out the Needle picture box
+                    if (IMDNeedleImagepictureBox.Image != null)
+                    {
+                        IMDNeedleImagepictureBox.Image.Dispose();
+                    }
+                    IMDNeedleImagepictureBox.Image = null;
 
                     //Get the folder path to remove
                     string DeletePath = ModManConfig.GetDialsDataDir() + "\\" + IMDModDialsInstalledlistBox.SelectedItem.ToString();
-
-                    //I HATE doing this however it (the software) seems to need to keep the image file open while it's displaying it in the GUI
-                    //but it won't wait for the image to released before it tries to delete the image file.
-                    //Thread.Sleep(40);    //In milliseconds
 
                     //Delete the selected car mod directory
                     System.IO.Directory.Delete(DeletePath, true);
