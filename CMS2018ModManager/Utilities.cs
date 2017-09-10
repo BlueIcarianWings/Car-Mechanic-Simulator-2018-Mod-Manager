@@ -47,6 +47,25 @@ namespace CMS2018ModManager
             return index;
         }
 
+        //Determines if a folder or file is in a list, and returns it's index
+        public static int ArrayContainsString(List<string> StringList, string Search)
+        {
+            int index = -1;     //Return value, set to -1 as a default 'not found' value
+            int counter = 0;    //Array counter
+
+            foreach (string line in StringList)     //Loop through the array
+            {
+                if (line.Contains(Search))           //Look in line
+                {
+                    index = counter;                //Fill out return
+                    break;                          //Exit the loop
+                }
+                counter++;
+            }
+
+            return index;
+        }
+
         //Determines if a folder contains required folders or file
         public static bool[] RequiredFolderFileCheck(string[] StringList, string Location, bool Folder)
         {

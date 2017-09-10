@@ -10,6 +10,10 @@ https://github.com/BlueIcarianWings/Car-Mechanic-Simulator-2018-Mod-Manager
 
 Release notes
 
+0.3
+10/Sep/2017
+ModMan will now inspect what car mods are already installed, and update the installed list
+
 0.2.2
 9/Sep/2017
 Mod Dial images are now shown

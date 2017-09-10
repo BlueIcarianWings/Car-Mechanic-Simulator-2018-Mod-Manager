@@ -15,8 +15,8 @@ namespace CMS2018ModManager
 {
     public partial class MainForm : Form
     {
-        private string ModManVersion = "0.2.2";     //Version constant for ModManager
-        private string GameVersion = "1.2.7";       //Version constant for the game
+        private string ModManVersion = "0.3";       //Version constant for ModManager
+        private string GameVersion = "1.3.2";       //Version constant for the game
         //Lists to hold lists of mods   //Should probably move this stuff out into it's own class with the instal mod functions
         List<string> CarsModList = new List<string>();       //Holds the list of cars
         List<string> DialsModList = new List<string>();      //Holds the list of dials
@@ -56,6 +56,20 @@ namespace CMS2018ModManager
 
             //Populate the mod cars list GUI listbox
             PopulateInstalledModDialsList();
+        }
+
+        //Outputs the contents of the various lists to produce the stock items lists
+        //This will be hidden normally
+        private void MakeStockLists_Click(object sender, EventArgs e)
+        {
+            string Dest = ModManConfig.GetConfigDir() + "\\List.txt";
+            using (StreamWriter writer = new StreamWriter(Dest))
+            {
+                foreach (var item in CCMTAvailableCarslistBox.Items)
+                {
+                    writer.WriteLine(item.ToString());
+                }
+            }
         }
 
         #region Menu strip
@@ -839,17 +853,13 @@ namespace CMS2018ModManager
                     {
                         break;  //exit loop if an empty line
                     }
-                    else if(line.StartsWith("["))   //Header and notes row start with [
+                    else if (line.StartsWith("["))   //Header and notes row start with [
                     {
                         //Header line nothing to do
                     }
                     else
                     {
-                        //Add the mod car to the list
-                        //if (line != "") //I've messed something up and it's adding blank lines somewhere  //Think it was duplication in copy/pasting the this function for the dial side
-                        //{
-                            CarsModList.Add(line);
-                        //}
+                        CarsModList.Add(line);
                     }
                 }
 
@@ -857,7 +867,58 @@ namespace CMS2018ModManager
                 reader.Close();
                 reader.Dispose();
             }
-            //No else as it(the mod file list) will be created when the first car is added
+            else
+            {
+                //No mod file list, so scan what we have verses the stock list and create a mod list with any differences
+                string StockList = ModManConfig.GetConfigDir() + "\\StockCarList.txt";
+
+                if (File.Exists(StockList))  //Check if the config file exists
+                {
+                    //create a streamReader to accses the config file
+                    StreamReader reader = new StreamReader(StockList);
+                    //string list (an array) to hold file output
+                    List<string> CarStockList = new List<string>();
+                    List<string> AllCarList = new List<string>();       //Holds the list of cars
+                    //string to hold a single line
+                    string line;
+
+                    //loop through all of the stock car file a line at a time
+                    while (true)
+                    {
+                        //Read a line from the file and add to the CarStockList
+                        line = reader.ReadLine();
+                        //check if line is null
+                        if (line == null)
+                        {
+                            break;  //exit loop if an empty line
+                        }
+                        else
+                        {
+                            CarStockList.Add(line); //Add line to the list
+                        }
+                    }
+
+                    //Add all the items from the all cars part of the GUI (I should really setup a class for car stuff now to this in a permanant list)
+                    foreach (var item in CCMTAvailableCarslistBox.Items)
+                    {
+                        AllCarList.Add(item.ToString());
+                    }
+
+                    //We now have the two lists so compare them
+                    foreach (string Line in AllCarList)
+                    {
+                        //If the Car in the all car list is not in the stock car list
+                        if(Utilities.ArrayContainsString(CarStockList, Line) == -1)
+                        {
+                            CarsModList.Add(Line);
+                        }
+                    }
+                    if (CarsModList.Count > 0)
+                    {
+                        WriteModCarsListFile();
+                    }
+                }
+            }
 
             //Update the GUI
             UpdateModCarsGUI();
@@ -1591,5 +1652,7 @@ namespace CMS2018ModManager
             }
         }
         #endregion
+
+        
     }
 }

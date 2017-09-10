@@ -74,6 +74,10 @@
             this.IMCModCarsInstalledlabel = new System.Windows.Forms.Label();
             this.InstallModDialstabPage = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.IMDNeedleImagelabel = new System.Windows.Forms.Label();
+            this.IMDNeedleImagepictureBox = new System.Windows.Forms.PictureBox();
+            this.IMDDialImagelabel = new System.Windows.Forms.Label();
+            this.IMDDialImagepictureBox = new System.Windows.Forms.PictureBox();
             this.IMDRemoveSelectedDialModbutton = new System.Windows.Forms.Button();
             this.IMDInstalledModDialsCountlabel = new System.Windows.Forms.Label();
             this.IMDInstallNewModDialbutton = new System.Windows.Forms.Button();
@@ -114,10 +118,7 @@
             this.setCarConfigDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.IMDDialImagepictureBox = new System.Windows.Forms.PictureBox();
-            this.IMDDialImagelabel = new System.Windows.Forms.Label();
-            this.IMDNeedleImagelabel = new System.Windows.Forms.Label();
-            this.IMDNeedleImagepictureBox = new System.Windows.Forms.PictureBox();
+            this.MakeStockListsbutton = new System.Windows.Forms.Button();
             this.MaintabControl.SuspendLayout();
             this.SaveEditortabPage.SuspendLayout();
             this.SaveGameEditorTabtabControl.SuspendLayout();
@@ -140,14 +141,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.IMCCarPicturepictureBox)).BeginInit();
             this.InstallModDialstabPage.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.IMDNeedleImagepictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.IMDDialImagepictureBox)).BeginInit();
             this.CarConfigtabPage.SuspendLayout();
             this.CCMTpanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CCMTCarPicturepictureBox)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.CCMTCCCgroupBox.SuspendLayout();
             this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.IMDDialImagepictureBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.IMDNeedleImagepictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // MaintabControl
@@ -681,6 +682,42 @@
             this.panel1.Size = new System.Drawing.Size(672, 297);
             this.panel1.TabIndex = 5;
             // 
+            // IMDNeedleImagelabel
+            // 
+            this.IMDNeedleImagelabel.AutoSize = true;
+            this.IMDNeedleImagelabel.Location = new System.Drawing.Point(191, 93);
+            this.IMDNeedleImagelabel.Name = "IMDNeedleImagelabel";
+            this.IMDNeedleImagelabel.Size = new System.Drawing.Size(73, 13);
+            this.IMDNeedleImagelabel.TabIndex = 6;
+            this.IMDNeedleImagelabel.Text = "Needle Image";
+            // 
+            // IMDNeedleImagepictureBox
+            // 
+            this.IMDNeedleImagepictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.IMDNeedleImagepictureBox.Location = new System.Drawing.Point(191, 109);
+            this.IMDNeedleImagepictureBox.Name = "IMDNeedleImagepictureBox";
+            this.IMDNeedleImagepictureBox.Size = new System.Drawing.Size(181, 181);
+            this.IMDNeedleImagepictureBox.TabIndex = 5;
+            this.IMDNeedleImagepictureBox.TabStop = false;
+            // 
+            // IMDDialImagelabel
+            // 
+            this.IMDDialImagelabel.AutoSize = true;
+            this.IMDDialImagelabel.Location = new System.Drawing.Point(4, 93);
+            this.IMDDialImagelabel.Name = "IMDDialImagelabel";
+            this.IMDDialImagelabel.Size = new System.Drawing.Size(57, 13);
+            this.IMDDialImagelabel.TabIndex = 4;
+            this.IMDDialImagelabel.Text = "Dial Image";
+            // 
+            // IMDDialImagepictureBox
+            // 
+            this.IMDDialImagepictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.IMDDialImagepictureBox.Location = new System.Drawing.Point(4, 109);
+            this.IMDDialImagepictureBox.Name = "IMDDialImagepictureBox";
+            this.IMDDialImagepictureBox.Size = new System.Drawing.Size(181, 181);
+            this.IMDDialImagepictureBox.TabIndex = 3;
+            this.IMDDialImagepictureBox.TabStop = false;
+            // 
             // IMDRemoveSelectedDialModbutton
             // 
             this.IMDRemoveSelectedDialModbutton.Location = new System.Drawing.Point(4, 63);
@@ -1060,47 +1097,24 @@
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
-            // IMDDialImagepictureBox
+            // MakeStockListsbutton
             // 
-            this.IMDDialImagepictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.IMDDialImagepictureBox.Location = new System.Drawing.Point(4, 109);
-            this.IMDDialImagepictureBox.Name = "IMDDialImagepictureBox";
-            this.IMDDialImagepictureBox.Size = new System.Drawing.Size(181, 181);
-            this.IMDDialImagepictureBox.TabIndex = 3;
-            this.IMDDialImagepictureBox.TabStop = false;
-            // 
-            // IMDDialImagelabel
-            // 
-            this.IMDDialImagelabel.AutoSize = true;
-            this.IMDDialImagelabel.Location = new System.Drawing.Point(4, 93);
-            this.IMDDialImagelabel.Name = "IMDDialImagelabel";
-            this.IMDDialImagelabel.Size = new System.Drawing.Size(57, 13);
-            this.IMDDialImagelabel.TabIndex = 4;
-            this.IMDDialImagelabel.Text = "Dial Image";
-            // 
-            // IMDNeedleImagelabel
-            // 
-            this.IMDNeedleImagelabel.AutoSize = true;
-            this.IMDNeedleImagelabel.Location = new System.Drawing.Point(191, 93);
-            this.IMDNeedleImagelabel.Name = "IMDNeedleImagelabel";
-            this.IMDNeedleImagelabel.Size = new System.Drawing.Size(73, 13);
-            this.IMDNeedleImagelabel.TabIndex = 6;
-            this.IMDNeedleImagelabel.Text = "Needle Image";
-            // 
-            // IMDNeedleImagepictureBox
-            // 
-            this.IMDNeedleImagepictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.IMDNeedleImagepictureBox.Location = new System.Drawing.Point(191, 109);
-            this.IMDNeedleImagepictureBox.Name = "IMDNeedleImagepictureBox";
-            this.IMDNeedleImagepictureBox.Size = new System.Drawing.Size(181, 181);
-            this.IMDNeedleImagepictureBox.TabIndex = 5;
-            this.IMDNeedleImagepictureBox.TabStop = false;
+            this.MakeStockListsbutton.Enabled = false;
+            this.MakeStockListsbutton.Location = new System.Drawing.Point(807, 0);
+            this.MakeStockListsbutton.Name = "MakeStockListsbutton";
+            this.MakeStockListsbutton.Size = new System.Drawing.Size(97, 23);
+            this.MakeStockListsbutton.TabIndex = 3;
+            this.MakeStockListsbutton.Text = "Make Stock Lists";
+            this.MakeStockListsbutton.UseVisualStyleBackColor = true;
+            this.MakeStockListsbutton.Visible = false;
+            this.MakeStockListsbutton.Click += new System.EventHandler(this.MakeStockLists_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(904, 662);
+            this.Controls.Add(this.MakeStockListsbutton);
             this.Controls.Add(this.MaintabControl);
             this.Controls.Add(this.menuStrip1);
             this.Name = "MainForm";
@@ -1134,6 +1148,8 @@
             this.InstallModDialstabPage.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.IMDNeedleImagepictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.IMDDialImagepictureBox)).EndInit();
             this.CarConfigtabPage.ResumeLayout(false);
             this.CarConfigtabPage.PerformLayout();
             this.CCMTpanel.ResumeLayout(false);
@@ -1143,8 +1159,6 @@
             this.CCMTCCCgroupBox.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.IMDDialImagepictureBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.IMDNeedleImagepictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1242,6 +1256,7 @@
         private System.Windows.Forms.PictureBox IMDNeedleImagepictureBox;
         private System.Windows.Forms.Label IMDDialImagelabel;
         private System.Windows.Forms.PictureBox IMDDialImagepictureBox;
+        private System.Windows.Forms.Button MakeStockListsbutton;
     }
 }
 
