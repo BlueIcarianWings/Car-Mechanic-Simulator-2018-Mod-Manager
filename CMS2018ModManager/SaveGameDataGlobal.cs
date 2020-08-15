@@ -82,9 +82,9 @@ namespace CMS2018ModManager
             //Stats_Bolts_MemLoc = 576;//240
             //bankLoan_MemLoc = 600;//258
 
-            money_MemLoc = 186;//0ba
-            level_MemLoc = 190;//0be
-            xp_MemLoc = 194;//0c2
+            money_MemLoc = 0xd4;//0ba
+            level_MemLoc = 0xd8;//0be
+            xp_MemLoc = 0xdc;//0c2
         }
 
         //Loads a Save game Global data file into the object from the fullpath and filename given
